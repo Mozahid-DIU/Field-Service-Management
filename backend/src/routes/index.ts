@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { adminRoutes } from "../modules/admin/admin.routes";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { categoryRoutes } from "../modules/category/category.routes";
 import {
@@ -24,6 +25,7 @@ const moduleRoutes: ModuleRoute[] = [
 	{ path: "/technicians", route: technicianRoutes },
 	{ path: "/invoices", route: invoiceRoutes },
 	{ path: "/payments", route: paymentRoutes },
+	{ path: "/admin", route: adminRoutes },
 ];
 
 for (const { path, route } of moduleRoutes) {
