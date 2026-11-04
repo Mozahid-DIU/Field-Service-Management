@@ -19,11 +19,14 @@ function greeting(): string {
 export default function CustomerHome() {
 	const { user } = useAuth();
 	const active = useWorkOrders({ status: "PENDING,APPROVED,ASSIGNED,EN_ROUTE,IN_PROGRESS", limit: 5, sortBy: "updatedAt" });
-	const due = useWorkOrders({ status: "COMPLETED", limit: 5 });
+	const due = useWorkOrders({ status: "COMPLETED", limit: 100 });
 	const categories = useCategories();
 
 	const dueOrders = due.data?.data ?? [];
 	const dueTotal = dueOrders.reduce((sum, o) => sum + Number(o.invoice?.total ?? 0), 0);
+	const singleBill = dueOrders.length === 1;
+	// One bill: open it directly. Several: open the list so each bill can be paid.
+	const billsHref = singleBill ? `/orders/${dueOrders[0].id}` : "/customer/requests?tab=due";
 
 	return (
 		<>
@@ -43,7 +46,7 @@ export default function CustomerHome() {
 
 			{dueOrders.length > 0 && (
 				<Link
-					href={`/orders/${dueOrders[0].id}`}
+					href={billsHref}
 					className="group mb-8 flex flex-col gap-4 rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-5 sm:flex-row sm:items-center sm:justify-between"
 				>
 					<div className="flex items-center gap-4">
@@ -54,10 +57,15 @@ export default function CustomerHome() {
 							<p className="font-display text-xl font-semibold">
 								{dueOrders.length} bill{dueOrders.length > 1 ? "s" : ""} to pay
 							</p>
-							<p className="text-sm text-ink-soft">The work is done. Pay with bKash in a few taps.</p>
+							<p className="text-sm text-ink-soft">
+								{singleBill
+									? `${dueOrders[0].title}. The work is done, pay with bKash in a few taps.`
+									: "The work is done. Tap to see each bill and pay with bKash."}
+							</p>
 						</div>
 					</div>
 					<span className="flex items-center gap-2 text-xl font-bold text-orange-600">
+						{!singleBill && <span className="text-sm font-medium text-ink-soft">Total</span>}
 						{taka(dueTotal)}
 						<ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
 					</span>
