@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BadgeCheck, CalendarCheck, Check, ClipboardList, CreditCard, MapPin, ShieldCheck, Truck, Wallet } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarCheck, Check, ClipboardList, CreditCard, MapPin, ShieldCheck, Star, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/brand";
 import { Avatar } from "@/components/ui/avatar";
@@ -12,16 +12,16 @@ import { taka } from "@/lib/format";
 import { useCategories } from "@/lib/queries";
 
 const STEPS = [
-	{ icon: ClipboardList, title: "Tell us the problem", body: "Choose a service, describe what's wrong and add a photo if you like." },
-	{ icon: Truck, title: "We send a technician", body: "We book a skilled technician at a time that works for you." },
-	{ icon: Wallet, title: "Pay when it's done", body: "Check the bill and pay securely with bKash. Then rate the service." },
+	{ icon: ClipboardList, title: "Tell us the problem", body: "Choose a service, describe what's wrong and add a photo if you like.", tone: "bg-sky-100 text-sky-600", ring: "border-t-sky-400" },
+	{ icon: Truck, title: "We send a technician", body: "We book a skilled technician at a time that works for you.", tone: "bg-amber-100 text-amber-600", ring: "border-t-amber-400" },
+	{ icon: Wallet, title: "Pay when it's done", body: "Check the bill and pay securely with bKash. Then rate the service.", tone: "bg-emerald-100 text-emerald-600", ring: "border-t-emerald-400" },
 ];
 
 const REASONS = [
-	{ icon: BadgeCheck, title: "Skilled technicians", body: "Every technician is matched to the job by their skills." },
-	{ icon: CalendarCheck, title: "On-time visits", body: "A technician is never booked for two jobs at the same time." },
-	{ icon: MapPin, title: "Know what's happening", body: "See when your technician is on the way and when work starts." },
-	{ icon: ShieldCheck, title: "Fair, clear bills", body: "A fixed service fee plus parts. You see every item before paying." },
+	{ icon: BadgeCheck, title: "Skilled technicians", body: "Every technician is matched to the job by their skills.", tone: "bg-violet-100 text-violet-600" },
+	{ icon: CalendarCheck, title: "On-time visits", body: "A technician is never booked for two jobs at the same time.", tone: "bg-sky-100 text-sky-600" },
+	{ icon: MapPin, title: "Know what's happening", body: "See when your technician is on the way and when work starts.", tone: "bg-rose-100 text-rose-600" },
+	{ icon: ShieldCheck, title: "Fair, clear bills", body: "A fixed service fee plus parts. You see every item before paying.", tone: "bg-amber-100 text-amber-600" },
 ];
 
 function Nav() {
@@ -65,7 +65,7 @@ function BookingPreview() {
 		{ label: "Work done & payment", done: false },
 	];
 	return (
-		<div className="mx-auto w-full max-w-sm rounded-3xl border border-line bg-card p-6 shadow-lift">
+		<div className="mx-auto w-full max-w-sm rounded-3xl bg-card p-6 text-ink shadow-2xl shadow-emerald-900/30">
 			<div className="flex items-center gap-3">
 				<CategoryIcon name="AC Repair" />
 				<div>
@@ -111,34 +111,39 @@ export default function LandingPage() {
 			<Nav />
 
 			{/* Hero */}
-			<section className="bg-gradient-to-b from-signal-wash/70 to-card">
-				<div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 sm:px-8 lg:grid-cols-2 lg:py-20">
+			<section className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white">
+				<div className="pointer-events-none absolute -top-32 -right-24 size-96 rounded-full bg-white/10" aria-hidden />
+				<div className="pointer-events-none absolute -bottom-40 -left-24 size-96 rounded-full bg-amber-300/20" aria-hidden />
+				<div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 sm:px-8 lg:grid-cols-2 lg:py-20">
 					<div>
-						<h1 className="text-4xl leading-tight font-extrabold tracking-tight text-ink sm:text-5xl">
+						<span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium">
+							<span className="size-2 rounded-full bg-amber-300" /> Now serving Dhaka
+						</span>
+						<h1 className="mt-5 text-4xl leading-tight font-extrabold tracking-tight sm:text-5xl">
 							Home repairs,
 							<br />
-							<span className="text-signal">made easy.</span>
+							<span className="text-amber-200">made easy.</span>
 						</h1>
-						<p className="mt-5 max-w-md text-lg leading-relaxed text-ink-soft">
+						<p className="mt-5 max-w-md text-lg leading-relaxed text-white/85">
 							Book a trusted technician for your AC, plumbing, electrical or appliance problem. Know when they arrive, and pay with bKash when the job is done.
 						</p>
 						<div className="mt-8 flex flex-wrap gap-3">
-							<ButtonLink href="/register" size="lg">
+							<ButtonLink href="/register" size="lg" className="bg-none bg-amber-400 text-ink shadow-none hover:bg-amber-300">
 								Book a service <ArrowRight className="size-5" />
 							</ButtonLink>
-							<ButtonLink href="/login" size="lg" variant="outline">
+							<ButtonLink href="/login" size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20">
 								Try the demo
 							</ButtonLink>
 						</div>
-						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-soft">
+						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/85">
 							<span className="flex items-center gap-2">
-								<CreditCard className="size-4 text-signal" aria-hidden /> Pay with bKash
+								<CreditCard className="size-4 text-amber-200" aria-hidden /> Pay with bKash
 							</span>
 							<span className="flex items-center gap-2">
-								<BadgeCheck className="size-4 text-signal" aria-hidden /> Skilled technicians
+								<BadgeCheck className="size-4 text-amber-200" aria-hidden /> Skilled technicians
 							</span>
 							<span className="flex items-center gap-2">
-								<MapPin className="size-4 text-signal" aria-hidden /> Serving Dhaka
+								<Star className="size-4 text-amber-200" aria-hidden /> Rated by customers
 							</span>
 						</div>
 					</div>
@@ -148,12 +153,12 @@ export default function LandingPage() {
 
 			{/* Services */}
 			<section id="services" className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-				<h2 className="text-3xl font-bold tracking-tight">Our services</h2>
+				<h2 className="text-3xl font-bold tracking-tight">What can we fix for you?</h2>
 				<p className="mt-2 text-ink-soft">The price shown is the service fee. Parts, if needed, are added to your bill.</p>
 				<div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{categories.isLoading && [0, 1, 2, 3, 4, 5].map((i) => <Skeleton key={i} className="h-40 rounded-2xl" />)}
 					{categories.data?.map((c) => (
-						<Link key={c.id} href="/register" className="ticket group flex flex-col p-5 transition hover:border-signal hover:shadow-lift">
+						<Link key={c.id} href="/register" className="ticket group flex flex-col p-5 transition hover:-translate-y-1 hover:border-signal/40 hover:shadow-lift">
 							<CategoryIcon name={c.name} />
 							<p className="mt-4 text-lg font-semibold">{c.name}</p>
 							<p className="mt-1 flex-1 text-sm text-ink-soft">{c.description}</p>
@@ -169,16 +174,17 @@ export default function LandingPage() {
 			</section>
 
 			{/* How it works */}
-			<section id="how" className="bg-paper">
+			<section id="how" className="bg-gradient-to-b from-sky-50 to-emerald-50/60">
 				<div className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
 					<h2 className="text-center text-3xl font-bold tracking-tight">How it works</h2>
+					<p className="mt-2 text-center text-ink-soft">Three simple steps, from booking to payment.</p>
 					<ol className="mt-10 grid gap-6 md:grid-cols-3">
 						{STEPS.map((step, i) => (
-							<li key={step.title} className="ticket p-6 text-center">
-								<span className="mx-auto grid size-14 place-items-center rounded-full bg-signal-wash text-signal-strong">
+							<li key={step.title} className={`ticket border-t-4 p-6 text-center ${step.ring}`}>
+								<span className={`mx-auto grid size-14 place-items-center rounded-2xl ${step.tone}`}>
 									<step.icon className="size-6" aria-hidden />
 								</span>
-								<p className="mt-4 text-sm font-semibold text-signal-strong">Step {i + 1}</p>
+								<p className="mt-4 text-sm font-semibold text-ink-faint">Step {i + 1}</p>
 								<p className="mt-1 text-lg font-semibold">{step.title}</p>
 								<p className="mt-2 text-sm leading-relaxed text-ink-soft">{step.body}</p>
 							</li>
@@ -193,7 +199,7 @@ export default function LandingPage() {
 				<div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 					{REASONS.map((r) => (
 						<div key={r.title}>
-							<span className="grid size-11 place-items-center rounded-xl bg-signal-wash text-signal-strong">
+							<span className={`grid size-12 place-items-center rounded-2xl ${r.tone}`}>
 								<r.icon className="size-5" aria-hidden />
 							</span>
 							<p className="mt-4 font-semibold">{r.title}</p>
@@ -205,12 +211,12 @@ export default function LandingPage() {
 
 			{/* CTA */}
 			<section className="mx-auto max-w-6xl px-5 pb-16 sm:px-8">
-				<div className="flex flex-col items-start gap-6 rounded-3xl bg-signal px-8 py-10 text-white sm:flex-row sm:items-center sm:justify-between sm:px-12">
+				<div className="flex flex-col items-start gap-6 rounded-3xl bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 px-8 py-10 text-white shadow-lift sm:flex-row sm:items-center sm:justify-between sm:px-12">
 					<div>
 						<h2 className="text-2xl font-bold sm:text-3xl">Something not working at home?</h2>
 						<p className="mt-2 text-white/85">Book a technician in a few minutes.</p>
 					</div>
-					<ButtonLink href="/register" size="lg" variant="outline" className="border-transparent bg-white text-signal-strong hover:bg-white/90">
+					<ButtonLink href="/register" size="lg" variant="outline" className="border-transparent bg-white text-orange-600 hover:bg-white/90">
 						Get started
 					</ButtonLink>
 				</div>

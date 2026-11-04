@@ -22,9 +22,9 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 
 const DEMO = [
-	{ label: "Admin", email: "admin@fixflow.com", password: "Admin@12345", icon: ShieldCheck },
-	{ label: "Customer", email: "rahim@example.com", password: "Password@123", icon: User },
-	{ label: "Technician", email: "karim.tech@fixflow.com", password: "Password@123", icon: Wrench },
+	{ label: "Admin", email: "admin@fixflow.com", password: "Admin@12345", icon: ShieldCheck, tone: "bg-violet-100 text-violet-600" },
+	{ label: "Customer", email: "rahim@example.com", password: "Password@123", icon: User, tone: "bg-sky-100 text-sky-600" },
+	{ label: "Technician", email: "karim.tech@fixflow.com", password: "Password@123", icon: Wrench, tone: "bg-amber-100 text-amber-600" },
 ];
 
 function LoginForm() {
@@ -56,10 +56,12 @@ function LoginForm() {
 
 	return (
 		<>
-			<h1 className="text-[28px] font-bold tracking-tight">Welcome back</h1>
-			<p className="mt-1 text-ink-soft">Sign in to your FixFlow account.</p>
+			<div className="text-center">
+				<h1 className="text-[26px] font-bold tracking-tight">Welcome back 👋</h1>
+				<p className="mt-1 text-ink-soft">Sign in to your FixFlow account.</p>
+			</div>
 
-			<div className="mt-8">
+			<div className="mt-7">
 				<GoogleButton onSuccess={finish} />
 				<form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
 					<Field label="Email" htmlFor="email" error={errors.email?.message}>
@@ -96,8 +98,8 @@ function LoginForm() {
 				</form>
 			</div>
 
-			<div className="mt-8 rounded-2xl bg-paper p-4">
-				<p className="text-sm font-semibold text-ink-soft">Try a demo account</p>
+			<div className="mt-7 border-t border-line pt-5">
+				<p className="text-center text-sm font-semibold text-ink-soft">Or try a demo account</p>
 				<div className="mt-3 grid grid-cols-3 gap-2">
 					{DEMO.map((demo) => (
 						<button
@@ -109,14 +111,16 @@ function LoginForm() {
 							}}
 							className="flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-line bg-card px-2 py-3 text-sm font-medium transition hover:border-signal hover:text-signal-strong"
 						>
-							<demo.icon className="size-4 text-signal" aria-hidden />
+							<span className={`grid size-9 place-items-center rounded-full ${demo.tone}`}>
+								<demo.icon className="size-4" aria-hidden />
+							</span>
 							{demo.label}
 						</button>
 					))}
 				</div>
 			</div>
 
-			<p className="mt-8 text-center text-sm text-ink-soft">
+			<p className="mt-6 text-center text-sm text-ink-soft">
 				New to FixFlow?{" "}
 				<Link href="/register" className="font-semibold text-signal-strong hover:underline">
 					Create an account

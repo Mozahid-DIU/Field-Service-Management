@@ -13,7 +13,7 @@ export function GoogleButton({ onSuccess }: { onSuccess: (payload: AuthPayload) 
 		<>
 			<div className="flex justify-center [&_iframe]:!mx-auto">
 				<GoogleLogin
-					width="384"
+					width="350"
 					shape="pill"
 					text="continue_with"
 					onSuccess={async ({ credential }) => {

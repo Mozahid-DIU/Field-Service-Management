@@ -7,7 +7,8 @@ type Variant = "primary" | "ink" | "outline" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
-	primary: "bg-signal text-white shadow-sm hover:bg-signal-strong active:scale-[0.98]",
+	primary:
+		"bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/20 hover:from-emerald-600 hover:to-teal-700 active:scale-[0.98]",
 	ink: "bg-ink text-white shadow-sm hover:bg-ink-soft active:scale-[0.98]",
 	outline: "border border-line-strong bg-card text-ink hover:bg-paper active:scale-[0.98]",
 	ghost: "text-ink-soft hover:bg-paper-sunken hover:text-ink",

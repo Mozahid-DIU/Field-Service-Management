@@ -115,6 +115,8 @@ body {
 	border-radius: 8px;
 }
 
+/* In the components layer so Tailwind utilities (border-t-*, hover:border-*) can override */
+@layer components {
 /* Card: the basic surface */
 .ticket {
 	background: var(--card);
@@ -135,6 +137,7 @@ body {
 
 .stagger > * {
 	animation: rise 0.35s var(--ease-out) both;
+}
 }
 
 @media (prefers-reduced-motion: reduce) {

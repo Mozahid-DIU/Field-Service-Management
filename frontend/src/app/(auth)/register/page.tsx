@@ -72,10 +72,12 @@ export default function RegisterPage() {
 
 	return (
 		<>
-			<h1 className="text-[28px] font-bold tracking-tight">Create your account</h1>
-			<p className="mt-1 text-ink-soft">It only takes a minute.</p>
+			<div className="text-center">
+				<h1 className="text-[26px] font-bold tracking-tight">Create your account</h1>
+				<p className="mt-1 text-ink-soft">It only takes a minute.</p>
+			</div>
 
-			<div className="mt-8">
+			<div className="mt-7">
 				<GoogleButton onSuccess={finish} />
 				<form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
 					<Field label="Full name" htmlFor="name" error={errors.name?.message}>
@@ -107,7 +109,7 @@ export default function RegisterPage() {
 				</form>
 			</div>
 
-			<p className="mt-8 text-center text-sm text-ink-soft">
+			<p className="mt-6 text-center text-sm text-ink-soft">
 				Already have an account?{" "}
 				<Link href="/login" className="font-semibold text-signal-strong hover:underline">
 					Sign in

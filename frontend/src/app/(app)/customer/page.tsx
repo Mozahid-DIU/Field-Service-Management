@@ -2,7 +2,7 @@
 
 import { ArrowRight, Plus, Wallet } from "lucide-react";
 import Link from "next/link";
-import { PageHeader } from "@/components/layout/app-shell";
+import { WelcomeBanner } from "@/components/ui/stat-card";
 import { ButtonLink } from "@/components/ui/button";
 import { EmptyState, TicketSkeleton } from "@/components/ui/states";
 import { OrderTicket } from "@/components/work-order/order-ticket";
@@ -27,16 +27,15 @@ export default function CustomerHome() {
 
 	return (
 		<>
-			<PageHeader
-				eyebrow="Overview"
+			<WelcomeBanner
 				title={
 					<>
-						{greeting()}, {user?.name.split(" ")[0]}.
+						{greeting()}, {user?.name.split(" ")[0]} 👋
 					</>
 				}
-				description="Here's what's happening with your requests."
-				actions={
-					<ButtonLink href="/customer/new" size="lg" icon={<Plus className="size-5" />}>
+				description="What needs fixing today?"
+				action={
+					<ButtonLink href="/customer/new" size="lg" icon={<Plus className="size-5" />} className="bg-none bg-white text-emerald-700 shadow-none hover:bg-amber-50">
 						Book a service
 					</ButtonLink>
 				}
@@ -45,10 +44,10 @@ export default function CustomerHome() {
 			{dueOrders.length > 0 && (
 				<Link
 					href={`/orders/${dueOrders[0].id}`}
-					className="group mb-8 flex flex-col gap-4 rounded-2xl border border-signal/30 bg-signal-wash p-5 sm:flex-row sm:items-center sm:justify-between"
+					className="group mb-8 flex flex-col gap-4 rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-5 sm:flex-row sm:items-center sm:justify-between"
 				>
 					<div className="flex items-center gap-4">
-						<span className="grid size-11 place-items-center rounded-xl bg-signal text-white">
+						<span className="grid size-11 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-md shadow-orange-500/25">
 							<Wallet className="size-6" aria-hidden />
 						</span>
 						<div>
@@ -58,7 +57,7 @@ export default function CustomerHome() {
 							<p className="text-sm text-ink-soft">The work is done. Pay with bKash in a few taps.</p>
 						</div>
 					</div>
-					<span className="flex items-center gap-2 text-xl font-bold text-signal-strong">
+					<span className="flex items-center gap-2 text-xl font-bold text-orange-600">
 						{taka(dueTotal)}
 						<ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
 					</span>

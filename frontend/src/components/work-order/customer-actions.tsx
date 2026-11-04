@@ -38,7 +38,7 @@ export function PayWithBkash({ order }: { order: WorkOrderDetail }) {
 			<div className="border-t border-line bg-paper/60 p-5">
 				<Button
 					size="lg"
-					className="w-full bg-[#e2136e] hover:bg-[#c40f5f]"
+					className="w-full bg-none bg-[#e2136e] shadow-none hover:bg-[#c40f5f]"
 					loading={pay.isPending || pay.isSuccess}
 					onClick={() => pay.mutate()}
 				>

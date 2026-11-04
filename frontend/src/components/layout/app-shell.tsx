@@ -37,7 +37,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 								aria-current={active ? "page" : undefined}
 								className={cn(
 									"flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors",
-									active ? "bg-signal-wash text-signal-strong" : "text-ink-soft hover:bg-paper hover:text-ink",
+									active ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/25" : "text-ink-soft hover:bg-paper hover:text-ink",
 								)}
 							>
 								<item.icon className="size-5" aria-hidden />

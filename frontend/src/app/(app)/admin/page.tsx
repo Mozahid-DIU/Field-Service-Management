@@ -1,11 +1,12 @@
 "use client";
 
-import { ArrowUpRight, Star } from "lucide-react";
+import { ArrowUpRight, Bell, Clock, Star, Wallet, Wrench } from "lucide-react";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/app-shell";
 import { Avatar } from "@/components/ui/avatar";
 import { PriorityTag } from "@/components/ui/badges";
 import { ButtonLink } from "@/components/ui/button";
+import { StatCard } from "@/components/ui/stat-card";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/states";
 import { errorMessage } from "@/lib/api";
 import { ago, rating, taka } from "@/lib/format";
@@ -27,16 +28,6 @@ const TAB_FOR: Record<WorkOrderStatus, string> = {
 	REJECTED: "closed",
 	CANCELLED: "closed",
 };
-
-function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: boolean }) {
-	return (
-		<div className="ticket p-5">
-			<p className="text-sm text-ink-soft">{label}</p>
-			<p className={accent ? "mt-1 text-2xl font-bold text-signal-strong" : "mt-1 text-2xl font-bold"}>{value}</p>
-			{sub && <p className="mt-1 text-xs text-ink-faint">{sub}</p>}
-		</div>
-	);
-}
 
 export default function AdminDashboard() {
 	const stats = useDashboardStats();
@@ -63,10 +54,10 @@ export default function AdminDashboard() {
 					[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-32" />)
 				) : (
 					<>
-						<Kpi accent label="Payments received" value={taka(s.revenue.totalCollected)} sub={`${taka(s.revenue.last30Days)} in the last 30 days`} />
-						<Kpi label="Outstanding" value={taka(s.revenue.outstanding)} sub={`${s.revenue.unpaidInvoices} unpaid invoice(s)`} />
-						<Kpi label="Jobs in progress" value={String(active)} sub={`${byStatus.EN_ROUTE ?? 0} on the way · ${byStatus.IN_PROGRESS ?? 0} working`} />
-						<Kpi label="Needs your action" value={String((byStatus.PENDING ?? 0) + (byStatus.APPROVED ?? 0))} sub={`${byStatus.PENDING ?? 0} to review · ${toSchedule.data?.meta.total ?? byStatus.APPROVED ?? 0} to schedule`} />
+						<StatCard tone="emerald" icon={Wallet} label="Payments received" value={taka(s.revenue.totalCollected)} sub={`${taka(s.revenue.last30Days)} in the last 30 days`} />
+						<StatCard tone="amber" icon={Clock} label="Waiting for payment" value={taka(s.revenue.outstanding)} sub={`${s.revenue.unpaidInvoices} unpaid bill(s)`} />
+						<StatCard tone="sky" icon={Wrench} label="Jobs in progress" value={active} sub={`${byStatus.EN_ROUTE ?? 0} on the way · ${byStatus.IN_PROGRESS ?? 0} working`} />
+						<StatCard tone="rose" icon={Bell} label="Needs your action" value={(byStatus.PENDING ?? 0) + (byStatus.APPROVED ?? 0)} sub={`${byStatus.PENDING ?? 0} to review · ${toSchedule.data?.meta.total ?? byStatus.APPROVED ?? 0} to schedule`} />
 					</>
 				)}
 			</section>
@@ -152,7 +143,7 @@ export default function AdminDashboard() {
 											<span className="font-mono font-semibold">{c.count}</span>
 										</div>
 										<div className="h-2 rounded-full bg-paper-sunken">
-											<div className="h-full rounded-full bg-signal transition-[width] duration-700" style={{ width: `${(c.count / maxCategory) * 100}%` }} />
+											<div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-[width] duration-700" style={{ width: `${(c.count / maxCategory) * 100}%` }} />
 										</div>
 									</li>
 								))}

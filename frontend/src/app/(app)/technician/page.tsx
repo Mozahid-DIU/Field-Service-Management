@@ -1,8 +1,8 @@
 "use client";
 
-import { CalendarClock, ChevronRight, MapPin, Phone, Star } from "lucide-react";
+import { CalendarClock, CheckCircle2, ChevronRight, MapPin, Phone, Star, Sun } from "lucide-react";
 import Link from "next/link";
-import { PageHeader } from "@/components/layout/app-shell";
+import { StatCard, WelcomeBanner } from "@/components/ui/stat-card";
 import { StatusPill } from "@/components/ui/badges";
 import { EmptyState, Skeleton, TicketSkeleton } from "@/components/ui/states";
 import { useAuth } from "@/lib/auth-store";
@@ -71,29 +71,22 @@ export default function TechnicianToday() {
 
 	return (
 		<>
-			<PageHeader
-				eyebrow={new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}
-				title={<>Hi, {user?.name.split(" ")[0]}</>}
-				description="Here are your jobs for today."
+			<WelcomeBanner
+				title={<>Hi, {user?.name.split(" ")[0]} 👋</>}
+				description={`${new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })} · Here are your jobs for today.`}
 			/>
 
 			<section className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4 stagger">
 				{stats.isLoading
 					? [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-24" />)
-					: [
-							{ label: "Today", value: String(todays.length + current.length) },
-							{ label: "Upcoming", value: String(stats.data?.upcomingJobs ?? 0) },
-							{ label: "Jobs done", value: String(profile?.totalJobs ?? 0) },
-							{ label: "Rating", value: rating(profile?.avgRating, profile?.ratingCount), star: true },
-						].map((s) => (
-							<div key={s.label} className="ticket p-4">
-								<p className="text-xs font-semibold text-ink-faint">{s.label}</p>
-								<p className="mt-1 flex items-center gap-1.5 font-display text-3xl font-bold">
-									{s.value}
-									{s.star && <Star className="size-5 fill-signal text-signal" aria-hidden />}
-								</p>
-							</div>
-						))}
+					: (
+							<>
+								<StatCard label="Today" value={todays.length + current.length} icon={Sun} tone="sky" />
+								<StatCard label="Upcoming" value={stats.data?.upcomingJobs ?? 0} icon={CalendarClock} tone="violet" />
+								<StatCard label="Jobs done" value={profile?.totalJobs ?? 0} icon={CheckCircle2} tone="emerald" />
+								<StatCard label="Rating" value={rating(profile?.avgRating, profile?.ratingCount)} icon={Star} tone="amber" />
+							</>
+						)}
 			</section>
 
 			{current.length > 0 && (
