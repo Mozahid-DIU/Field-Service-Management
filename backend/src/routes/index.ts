@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authRoutes } from "../modules/auth/auth.routes";
 
 const router = Router();
 
@@ -7,7 +8,7 @@ interface ModuleRoute {
 	route: Router;
 }
 
-const moduleRoutes: ModuleRoute[] = [];
+const moduleRoutes: ModuleRoute[] = [{ path: "/auth", route: authRoutes }];
 
 for (const { path, route } of moduleRoutes) {
 	router.use(path, route);
