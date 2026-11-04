@@ -5,7 +5,7 @@ import { cn } from "@/lib/format";
 export type StatTone = "emerald" | "amber" | "sky" | "rose" | "violet";
 
 const TONES: Record<StatTone, { card: string; chip: string }> = {
-	emerald: { card: "from-emerald-50 to-white border-emerald-100", chip: "bg-emerald-500 text-white" },
+	emerald: { card: "from-signal-wash to-white border-signal/15", chip: "bg-bottle-600 text-white" },
 	amber: { card: "from-amber-50 to-white border-amber-100", chip: "bg-amber-500 text-white" },
 	sky: { card: "from-sky-50 to-white border-sky-100", chip: "bg-sky-500 text-white" },
 	rose: { card: "from-rose-50 to-white border-rose-100", chip: "bg-rose-500 text-white" },
@@ -43,9 +43,9 @@ export function StatCard({
 /** Colourful greeting banner used at the top of home screens. */
 export function WelcomeBanner({ title, description, action }: { title: ReactNode; description?: ReactNode; action?: ReactNode }) {
 	return (
-		<section className="relative mb-6 overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 p-6 text-white shadow-lift sm:p-8">
-			<div className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-white/10" aria-hidden />
-			<div className="pointer-events-none absolute -bottom-20 right-24 size-40 rounded-full bg-amber-300/25" aria-hidden />
+		<section className="relative mb-6 overflow-hidden rounded-3xl bg-gradient-to-br from-bottle-900 via-bottle-800 to-bottle-600 p-6 text-white shadow-lift sm:p-8">
+			<div className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-white/[0.06]" aria-hidden />
+			<div className="pointer-events-none absolute -bottom-20 right-24 size-40 rounded-full bg-amber-300/15" aria-hidden />
 			<div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 				<div>
 					<h1 className="text-2xl font-bold sm:text-3xl">{title}</h1>

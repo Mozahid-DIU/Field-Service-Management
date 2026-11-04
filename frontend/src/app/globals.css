@@ -13,9 +13,9 @@
 	--line: #e4e8ec;
 	--line-strong: #d2d8de;
 
-	--signal: #0f9d7a;
-	--signal-strong: #0b7d61;
-	--signal-wash: #e5f5f0;
+	--signal: #00805c;
+	--signal-strong: #006a4e;
+	--signal-wash: #e3f2ec;
 
 	--st-pending: #b26a00;
 	--st-pending-bg: #fff4e0;
@@ -27,7 +27,7 @@
 	--st-enroute-bg: #e0f4f8;
 	--st-progress: #c2410c;
 	--st-progress-bg: #fff0e6;
-	--st-completed: #0b7d61;
+	--st-completed: #006a4e;
 	--st-completed-bg: #e5f5f0;
 	--st-paid: #15803d;
 	--st-paid-bg: #e6f6ea;
@@ -53,6 +53,14 @@
 	--color-signal: var(--signal);
 	--color-signal-strong: var(--signal-strong);
 	--color-signal-wash: var(--signal-wash);
+
+	/* Bottle green scale for hero areas and brand accents */
+	--color-bottle-500: #0a8f68;
+	--color-bottle-600: #00805c;
+	--color-bottle-700: #006a4e;
+	--color-bottle-800: #04533e;
+	--color-bottle-900: #033f30;
+	--color-bottle-950: #022a20;
 
 	/* One friendly typeface everywhere */
 	--font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;

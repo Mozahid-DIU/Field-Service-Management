@@ -65,7 +65,7 @@ function BookingPreview() {
 		{ label: "Work done & payment", done: false },
 	];
 	return (
-		<div className="mx-auto w-full max-w-sm rounded-3xl bg-card p-6 text-ink shadow-2xl shadow-emerald-900/30">
+		<div className="mx-auto w-full max-w-sm rounded-3xl bg-card p-6 text-ink shadow-2xl shadow-black/30">
 			<div className="flex items-center gap-3">
 				<CategoryIcon name="AC Repair" />
 				<div>
@@ -111,9 +111,9 @@ export default function LandingPage() {
 			<Nav />
 
 			{/* Hero */}
-			<section className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white">
-				<div className="pointer-events-none absolute -top-32 -right-24 size-96 rounded-full bg-white/10" aria-hidden />
-				<div className="pointer-events-none absolute -bottom-40 -left-24 size-96 rounded-full bg-amber-300/20" aria-hidden />
+			<section className="relative overflow-hidden bg-gradient-to-br from-bottle-950 via-bottle-800 to-bottle-700 text-white">
+				<div className="pointer-events-none absolute -top-32 -right-24 size-96 rounded-full bg-white/[0.06]" aria-hidden />
+				<div className="pointer-events-none absolute -bottom-40 -left-24 size-96 rounded-full bg-amber-300/10" aria-hidden />
 				<div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-14 sm:px-8 lg:grid-cols-2 lg:py-20">
 					<div>
 						<span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium">

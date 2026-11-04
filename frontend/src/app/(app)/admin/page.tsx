@@ -143,7 +143,7 @@ export default function AdminDashboard() {
 											<span className="font-mono font-semibold">{c.count}</span>
 										</div>
 										<div className="h-2 rounded-full bg-paper-sunken">
-											<div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-[width] duration-700" style={{ width: `${(c.count / maxCategory) * 100}%` }} />
+											<div className="h-full rounded-full bg-gradient-to-r from-bottle-500 to-bottle-700 transition-[width] duration-700" style={{ width: `${(c.count / maxCategory) * 100}%` }} />
 										</div>
 									</li>
 								))}

@@ -35,7 +35,7 @@ export default function CustomerHome() {
 				}
 				description="What needs fixing today?"
 				action={
-					<ButtonLink href="/customer/new" size="lg" icon={<Plus className="size-5" />} className="bg-none bg-white text-emerald-700 shadow-none hover:bg-amber-50">
+					<ButtonLink href="/customer/new" size="lg" icon={<Plus className="size-5" />} className="bg-none bg-white text-bottle-700 shadow-none hover:bg-amber-50">
 						Book a service
 					</ButtonLink>
 				}
