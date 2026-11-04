@@ -36,6 +36,13 @@ paymentRoutes.get(
 	c.getById,
 );
 
+paymentRoutes.post(
+	"/:id/verify",
+	auth("CUSTOMER", "ADMIN"),
+	validate({ params: idParamSchema }),
+	c.verify,
+);
+
 export const invoiceRoutes = Router();
 
 invoiceRoutes.get(

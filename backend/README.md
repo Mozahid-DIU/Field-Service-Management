@@ -2,29 +2,29 @@
 
 REST API for a field service business. Customers request repairs, admins review requests and assign technicians (with schedule-conflict detection), technicians update job status and submit service reports, and customers pay the generated invoice through **bKash**.
 
-| | |
-|---|---|
-| **Live API** | `https://<your-service>.onrender.com/api/v1` *(fill after deploy)* |
-| **API Docs** | [`postman/FixFlow.postman_collection.json`](postman/FixFlow.postman_collection.json) · published link *(fill after publishing)* |
-| **Admin (demo)** | `admin@fixflow.com` / `Admin@12345` |
-| **Demo customer** | `rahim@example.com` / `Password@123` |
-| **Demo technician** | `karim.tech@fixflow.com` / `Password@123` |
+|                     |                                                                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Live API**        | `https://<your-service>.onrender.com/api/v1` _(fill after deploy)_                                                              |
+| **API Docs**        | [`postman/FixFlow.postman_collection.json`](postman/FixFlow.postman_collection.json) · published link _(fill after publishing)_ |
+| **Admin (demo)**    | `admin@fixflow.com` / `Admin@12345`                                                                                             |
+| **Demo customer**   | `rahim@example.com` / `Password@123`                                                                                            |
+| **Demo technician** | `karim.tech@fixflow.com` / `Password@123`                                                                                       |
 
 ---
 
 ## Tech stack
 
-| Concern | Choice |
-|---|---|
-| Runtime / framework | Node.js 22, Express 5, TypeScript 5.9 |
-| Database / ORM | PostgreSQL (Neon) + Prisma 6 |
-| Validation | Zod 4 on every body, query and param |
-| Auth | JWT access token (Bearer) + rotating opaque refresh token (httpOnly cookie), bcrypt, Google Sign-In |
-| Payments | bKash Tokenized Checkout (sandbox) |
-| Caching | Redis (optional; degrades gracefully) |
-| Uploads | Multer + Cloudinary |
-| Security | helmet, CORS allow-list, express-rate-limit (global + strict auth limiter) |
-| Quality | Biome (lint + format), Vitest + Supertest |
+| Concern             | Choice                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------- |
+| Runtime / framework | Node.js 22, Express 5, TypeScript 5.9                                                               |
+| Database / ORM      | PostgreSQL (Neon) + Prisma 6                                                                        |
+| Validation          | Zod 4 on every body, query and param                                                                |
+| Auth                | JWT access token (Bearer) + rotating opaque refresh token (httpOnly cookie), bcrypt, Google Sign-In |
+| Payments            | bKash Tokenized Checkout (sandbox)                                                                  |
+| Caching             | Redis (optional; degrades gracefully)                                                               |
+| Uploads             | Multer + Cloudinary                                                                                 |
+| Security            | helmet, CORS allow-list, express-rate-limit (global + strict auth limiter)                          |
+| Quality             | Biome (lint + format), Vitest + Supertest                                                           |
 
 ## Architecture (MVC + service layer)
 
@@ -57,14 +57,14 @@ src/
 
 ## Roles
 
-| Capability | CUSTOMER | TECHNICIAN | ADMIN |
-|---|:-:|:-:|:-:|
-| Create / edit (while PENDING) / cancel own request | ✅ | | ✅ cancel |
-| Approve / reject, assign + schedule technician | | | ✅ |
-| Move job EN_ROUTE → IN_PROGRESS | | ✅ own jobs | ✅ |
-| Submit service report (completes job, issues invoice) | | ✅ own jobs | |
-| Pay invoice with bKash, leave feedback | ✅ own | | |
-| Manage categories, users, roles; stats; audit logs | | | ✅ |
+| Capability                                            | CUSTOMER | TECHNICIAN  |   ADMIN   |
+| ----------------------------------------------------- | :------: | :---------: | :-------: |
+| Create / edit (while PENDING) / cancel own request    |    ✅    |             | ✅ cancel |
+| Approve / reject, assign + schedule technician        |          |             |    ✅     |
+| Move job EN_ROUTE → IN_PROGRESS                       |          | ✅ own jobs |    ✅     |
+| Submit service report (completes job, issues invoice) |          | ✅ own jobs |           |
+| Pay invoice with bKash, leave feedback                |  ✅ own  |             |           |
+| Manage categories, users, roles; stats; audit logs    |          |             |    ✅     |
 
 Customers only ever see their own work orders, technicians only their assigned ones (row-level scoping in every query). Accessing someone else's resource returns **403**.
 
@@ -100,21 +100,21 @@ bKash → GET /payments/bkash/callback?paymentID=…&status=success|failure|canc
   → 303 redirect to FRONTEND_URL/payment/{success|failed|cancelled}
 ```
 
-Repeated callbacks are no-ops (idempotent), and failures and cancellations are recorded with a reason.
+Repeated callbacks are no-ops (idempotent). A payment is only marked FAILED/CANCELLED when bKash itself confirms it did not complete — a forged `status=cancel` cannot cancel a paid payment, and network errors leave it **pending** (re-checkable via `POST /payments/:id/verify`). A new attempt first settles older attempts with bKash, and a second successful payment for an already-paid invoice is recorded and flagged for refund instead of being lost.
 
 ## API overview (`/api/v1`, 40+ endpoints)
 
-| Area | Endpoints |
-|---|---|
-| Auth | `POST /auth/register` · `POST /auth/login` · `POST /auth/google` · `POST /auth/refresh-token` · `POST /auth/logout` · `PATCH /auth/change-password` |
-| Profile | `GET /users/me` · `PATCH /users/me` · `PATCH /users/me/technician-profile` |
-| Categories | `GET /categories` · `POST /categories` · `PATCH /categories/:id` · `DELETE /categories/:id` |
-| Work orders | `POST /work-orders` · `GET /work-orders` · `GET /work-orders/search` · `GET /work-orders/:id` · `PATCH /work-orders/:id` · `DELETE /work-orders/:id` · `GET /work-orders/:id/history` |
-| Workflow | `PATCH /work-orders/:id/review` · `POST /work-orders/:id/assign` · `PATCH /work-orders/:id/status` · `POST /work-orders/:id/cancel` · `POST /work-orders/:id/report` · `POST /work-orders/:id/feedback` |
-| Technicians | `GET /technicians` · `GET /technicians/me/jobs` · `GET /technicians/:id/stats` · `GET /technicians/:id/feedback` |
-| Payments | `POST /payments/bkash/initiate` · `GET /payments/bkash/callback` · `GET /payments/me` · `GET /payments/:id` · `GET /invoices/:id` |
-| Admin | `GET /admin/users` · `POST /admin/technicians` · `PATCH /admin/users/:id/role` · `PATCH /admin/users/:id/status` · `GET /admin/dashboard-stats` · `GET /admin/audit-logs` |
-| Uploads | `POST /uploads/images` |
+| Area        | Endpoints                                                                                                                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Auth        | `POST /auth/register` · `POST /auth/login` · `POST /auth/google` · `POST /auth/refresh-token` · `POST /auth/logout` · `PATCH /auth/change-password`                                                     |
+| Profile     | `GET /users/me` · `PATCH /users/me` · `PATCH /users/me/technician-profile`                                                                                                                              |
+| Categories  | `GET /categories` · `POST /categories` · `PATCH /categories/:id` · `DELETE /categories/:id`                                                                                                             |
+| Work orders | `POST /work-orders` · `GET /work-orders` · `GET /work-orders/search` · `GET /work-orders/:id` · `PATCH /work-orders/:id` · `DELETE /work-orders/:id` · `GET /work-orders/:id/history`                   |
+| Workflow    | `PATCH /work-orders/:id/review` · `POST /work-orders/:id/assign` · `PATCH /work-orders/:id/status` · `POST /work-orders/:id/cancel` · `POST /work-orders/:id/report` · `POST /work-orders/:id/feedback` |
+| Technicians | `GET /technicians` · `GET /technicians/me/jobs` · `GET /technicians/:id/stats` · `GET /technicians/:id/feedback`                                                                                        |
+| Payments    | `POST /payments/bkash/initiate` · `GET /payments/bkash/callback` · `POST /payments/:id/verify` · `GET /payments/me` · `GET /payments/:id` · `GET /invoices/:id`                                         |
+| Admin       | `GET /admin/users` · `POST /admin/technicians` · `PATCH /admin/users/:id/role` · `PATCH /admin/users/:id/status` · `GET /admin/dashboard-stats` · `GET /admin/audit-logs`                               |
+| Uploads     | `POST /uploads/images`                                                                                                                                                                                  |
 
 List endpoints support `page`, `limit`, `sortBy`, `sortOrder` and domain filters, e.g.
 `GET /work-orders?status=PENDING,APPROVED&priority=HIGH&sortBy=createdAt&sortOrder=desc&page=1&limit=10`.
@@ -146,13 +146,13 @@ npm run db:seed               # demo users, categories, 15 work orders
 npm run dev                   # http://localhost:5000/api/v1/health
 ```
 
-| Script | Purpose |
-|---|---|
-| `npm run dev` | Watch mode (tsx) |
+| Script                        | Purpose                    |
+| ----------------------------- | -------------------------- |
+| `npm run dev`                 | Watch mode (tsx)           |
 | `npm run build` / `npm start` | Compile to `dist/` and run |
-| `npm test` | Vitest suite |
-| `npm run lint` | Biome check |
-| `npm run typecheck` | `tsc --noEmit` |
+| `npm test`                    | Vitest suite               |
+| `npm run lint`                | Biome check                |
+| `npm run typecheck`           | `tsc --noEmit`             |
 
 **bKash sandbox:** the public sandbox merchant credentials from the bKash developer docs work out of the box. Set them in `.env` (`BKASH_USERNAME`, `BKASH_PASSWORD`, `BKASH_APP_KEY`, `BKASH_APP_SECRET`).
 

@@ -47,6 +47,15 @@ export const paymentController = {
 		sendResponse(res, { message: "Payment retrieved", data });
 	}),
 
+	verify: catchAsync(async (req, res) => {
+		const { params } = validated(res.locals);
+		const data = await paymentService.verify(params.id, requireUser(req.user));
+		sendResponse(res, {
+			message: `Payment status re-checked with bKash: ${data.outcome}`,
+			data,
+		});
+	}),
+
 	listMine: catchAsync(async (req, res) => {
 		const { query } = validated<MyPaymentsQuery>(res.locals);
 		const { data, meta } = await paymentService.listMine(

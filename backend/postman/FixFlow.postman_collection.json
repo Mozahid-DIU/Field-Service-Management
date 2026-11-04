@@ -118,13 +118,8 @@
 								},
 								"url": {
 									"raw": "{{baseUrl}}/auth/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"auth",
-										"login"
-									]
+									"host": ["{{baseUrl}}"],
+									"path": ["auth", "login"]
 								}
 							}
 						},
@@ -169,13 +164,8 @@
 								},
 								"url": {
 									"raw": "{{baseUrl}}/auth/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"auth",
-										"login"
-									]
+									"host": ["{{baseUrl}}"],
+									"path": ["auth", "login"]
 								}
 							}
 						},
@@ -220,13 +210,8 @@
 								},
 								"url": {
 									"raw": "{{baseUrl}}/auth/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"auth",
-										"login"
-									]
+									"host": ["{{baseUrl}}"],
+									"path": ["auth", "login"]
 								}
 							}
 						}
@@ -256,13 +241,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/register",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"register"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
 						},
 						"description": "Always creates a CUSTOMER. A `role` field in the body is rejected."
 					}
@@ -302,13 +282,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/register",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"register"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
 						},
 						"description": "Shows the structured validation error envelope."
 					}
@@ -337,13 +312,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/google",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"google"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "google"]
 						},
 						"description": "Verifies a Google Identity Services ID token (audience = GOOGLE_CLIENT_ID). Creates or links the account."
 					}
@@ -384,13 +354,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/refresh-token",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"refresh-token"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "refresh-token"]
 						},
 						"description": "Old refresh token is revoked on use. Re-using a revoked token revokes ALL sessions of that user."
 					}
@@ -426,13 +391,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/change-password",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"change-password"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "change-password"]
 						}
 					}
 				},
@@ -460,13 +420,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/auth/logout",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"auth",
-								"logout"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "logout"]
 						}
 					}
 				}
@@ -492,13 +447,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/users/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"me"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
 						}
 					}
 				},
@@ -533,13 +483,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/users/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"me"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
 						}
 					}
 				},
@@ -574,14 +519,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/users/me/technician-profile",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"me",
-								"technician-profile"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me", "technician-profile"]
 						}
 					}
 				}
@@ -613,12 +552,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/categories",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"categories"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
 						}
 					}
 				},
@@ -653,12 +588,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/categories",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"categories"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
 						}
 					}
 				},
@@ -693,13 +624,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/categories/{{categoryId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"categories",
-								"{{categoryId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", "{{categoryId}}"]
 						}
 					}
 				},
@@ -720,13 +646,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/categories/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"categories",
-								":id"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", ":id"]
 						},
 						"description": "Replace :id with a category you created. Sets deletedAt instead of removing the row."
 					}
@@ -781,12 +702,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders"]
 						}
 					}
 				},
@@ -832,14 +749,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/review",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"review"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "review"]
 						}
 					}
 				},
@@ -874,14 +785,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/review",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"review"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "review"]
 						}
 					}
 				},
@@ -902,12 +807,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/technicians?categoryId={{categoryId}}&from=2026-12-20T10:00:00.000Z&to=2026-12-20T12:00:00.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"technicians"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["technicians"],
 							"query": [
 								{
 									"key": "categoryId",
@@ -956,14 +857,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/assign",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"assign"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "assign"]
 						}
 					}
 				},
@@ -998,12 +893,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders"]
 						},
 						"description": "Create, approve and then assign this order to the same technician from 11:00–13:00 on the same day — the assign call returns 409 with the clashing work order code."
 					}
@@ -1050,14 +941,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"status"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "status"]
 						}
 					}
 				},
@@ -1092,14 +977,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"status"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "status"]
 						}
 					}
 				},
@@ -1134,14 +1013,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"status"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "status"]
 						}
 					}
 				},
@@ -1189,14 +1062,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/report",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"report"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "report"]
 						}
 					}
 				},
@@ -1217,13 +1084,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/invoices/{{invoiceId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"invoices",
-								"{{invoiceId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["invoices", "{{invoiceId}}"]
 						}
 					}
 				},
@@ -1273,14 +1135,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/bkash/initiate",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"payments",
-								"bkash",
-								"initiate"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "bkash", "initiate"]
 						},
 						"description": "Open `data.bkashURL` in a browser and pay with the sandbox wallet 01770618575 / OTP 123456 / PIN 12121. bKash redirects to /payments/bkash/callback which verifies the payment server-side and then redirects to the frontend."
 					}
@@ -1302,13 +1158,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/{{paymentId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"payments",
-								"{{paymentId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "{{paymentId}}"]
 						}
 					}
 				},
@@ -1343,14 +1194,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/feedback",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"feedback"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "feedback"]
 						}
 					}
 				},
@@ -1371,14 +1216,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/history",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"history"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "history"]
 						}
 					}
 				}
@@ -1404,12 +1243,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders?page=1&limit=10&status=PENDING,APPROVED&priority=HIGH&categoryId={{categoryId}}&sortBy=createdAt&sortOrder=desc",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders"],
 							"query": [
 								{
 									"key": "page",
@@ -1467,13 +1302,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/search?q=mirpur",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"search"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "search"],
 							"query": [
 								{
 									"key": "q",
@@ -1501,13 +1331,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}"]
 						}
 					}
 				},
@@ -1542,13 +1367,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}"]
 						}
 					}
 				},
@@ -1583,14 +1403,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/cancel",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"cancel"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "cancel"]
 						}
 					}
 				},
@@ -1625,14 +1439,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/review",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}",
-								"review"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}", "review"]
 						}
 					}
 				},
@@ -1653,13 +1461,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"{{workOrderId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "{{workOrderId}}"]
 						}
 					}
 				},
@@ -1691,13 +1494,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders/00000000-0000-4000-8000-000000000000",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders",
-								"00000000-0000-4000-8000-000000000000"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders", "00000000-0000-4000-8000-000000000000"]
 						}
 					}
 				},
@@ -1722,12 +1520,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/work-orders",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"work-orders"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["work-orders"]
 						}
 					}
 				}
@@ -1753,14 +1547,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/technicians/me/jobs?status=ASSIGNED&date=2026-12-20",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"technicians",
-								"me",
-								"jobs"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["technicians", "me", "jobs"],
 							"query": [
 								{
 									"key": "status",
@@ -1795,12 +1583,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/technicians?available=true&sortBy=avgRating&q=karim",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"technicians"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["technicians"],
 							"query": [
 								{
 									"key": "available",
@@ -1837,14 +1621,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/technicians/{{technicianId}}/stats",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"technicians",
-								"{{technicianId}}",
-								"stats"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["technicians", "{{technicianId}}", "stats"]
 						}
 					}
 				},
@@ -1858,14 +1636,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/technicians/{{technicianId}}/feedback",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"technicians",
-								"{{technicianId}}",
-								"feedback"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["technicians", "{{technicianId}}", "feedback"]
 						}
 					}
 				}
@@ -1905,14 +1677,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/bkash/initiate",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"payments",
-								"bkash",
-								"initiate"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "bkash", "initiate"]
 						}
 					}
 				},
@@ -1926,14 +1692,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/bkash/callback?paymentID=TR0011...&status=success",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"payments",
-								"bkash",
-								"callback"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "bkash", "callback"],
 							"query": [
 								{
 									"key": "paymentID",
@@ -1966,14 +1726,32 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/{{paymentId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"payments",
-								"{{paymentId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "{{paymentId}}"]
 						}
+					}
+				},
+				{
+					"name": "Re-check payment with bKash (pending page)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/{{paymentId}}/verify",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "{{paymentId}}", "verify"]
+						},
+						"description": "Asks bKash for the real status of a pending payment and settles it if completed."
 					}
 				},
 				{
@@ -1993,13 +1771,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/me?page=1&limit=10&status=SUCCESS",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"payments",
-								"me"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "me"],
 							"query": [
 								{
 									"key": "page",
@@ -2036,13 +1809,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/invoices/{{invoiceId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"invoices",
-								"{{invoiceId}}"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["invoices", "{{invoiceId}}"]
 						}
 					}
 				}
@@ -2068,13 +1836,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/dashboard-stats",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"dashboard-stats"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "dashboard-stats"]
 						}
 					}
 				},
@@ -2107,13 +1870,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/users?role=CUSTOMER&q=&page=1&limit=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"users"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "users"],
 							"query": [
 								{
 									"key": "role",
@@ -2168,13 +1926,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/technicians",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"technicians"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "technicians"]
 						}
 					}
 				},
@@ -2209,15 +1962,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/users/{{userId}}/role",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"users",
-								"{{userId}}",
-								"role"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "users", "{{userId}}", "role"]
 						}
 					}
 				},
@@ -2252,15 +1998,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/users/{{userId}}/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"users",
-								"{{userId}}",
-								"status"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "users", "{{userId}}", "status"]
 						}
 					}
 				},
@@ -2295,15 +2034,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/users/{{userId}}/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"users",
-								"{{userId}}",
-								"status"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "users", "{{userId}}", "status"]
 						}
 					}
 				},
@@ -2324,13 +2056,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/audit-logs?page=1&limit=20&entity=WorkOrder&action=WORK_ORDER_STATUS_CHANGED",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"audit-logs"
-							],
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "audit-logs"],
 							"query": [
 								{
 									"key": "page",
@@ -2384,13 +2111,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/dashboard-stats",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"admin",
-								"dashboard-stats"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "dashboard-stats"]
 						}
 					}
 				}
@@ -2426,13 +2148,8 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/uploads/images",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"uploads",
-								"images"
-							]
+							"host": ["{{baseUrl}}"],
+							"path": ["uploads", "images"]
 						},
 						"description": "Field `images`: 1–5 JPEG/PNG/WEBP files, max 2 MB each. Pass returned URLs as `images` when creating a work order."
 					}
