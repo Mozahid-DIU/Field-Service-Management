@@ -16,7 +16,6 @@ export function GoogleButton({ onSuccess }: { onSuccess: (payload: AuthPayload) 
 					width="384"
 					shape="pill"
 					text="continue_with"
-					locale="en"
 					onSuccess={async ({ credential }) => {
 						if (!credential) return;
 						try {
