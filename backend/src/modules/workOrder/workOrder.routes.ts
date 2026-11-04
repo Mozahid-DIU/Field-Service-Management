@@ -2,6 +2,8 @@ import { Router } from "express";
 import { auth } from "../../middlewares/auth";
 import { validate } from "../../middlewares/validate";
 import { idParamSchema } from "../../utils/validators";
+import { feedbackController } from "../feedback/feedback.controller";
+import { createFeedbackSchema } from "../feedback/feedback.validation";
 import { workOrderController as c } from "./workOrder.controller";
 import {
 	assignWorkOrderSchema,
@@ -74,6 +76,13 @@ router.post(
 	auth("TECHNICIAN"),
 	validate({ ...byId, body: serviceReportSchema }),
 	c.submitReport,
+);
+
+router.post(
+	"/:id/feedback",
+	auth("CUSTOMER"),
+	validate({ ...byId, body: createFeedbackSchema }),
+	feedbackController.create,
 );
 
 export const workOrderRoutes = router;
