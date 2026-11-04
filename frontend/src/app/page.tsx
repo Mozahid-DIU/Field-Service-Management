@@ -3,7 +3,7 @@
 import { ArrowRight, BadgeCheck, CalendarCheck, ClipboardList, CreditCard, MapPin, ShieldCheck, Star, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/brand";
-import { QuickBook } from "@/components/landing/quick-book";
+import { ProblemFinder } from "@/components/landing/problem-finder";
 import { ButtonLink } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/states";
 import { homeFor, useAuth } from "@/lib/auth-store";
@@ -101,7 +101,7 @@ export default function LandingPage() {
 							</span>
 						</div>
 					</div>
-					<QuickBook />
+					<ProblemFinder />
 				</div>
 			</section>
 

@@ -42,6 +42,7 @@ function NewRequestWizard() {
 	const searchParams = useSearchParams();
 	const presetCategory = searchParams.get("category") ?? "";
 	const presetArea = searchParams.get("area");
+	const presetTitle = searchParams.get("title")?.slice(0, 150) ?? "";
 	const categories = useCategories();
 	const invalidate = useInvalidateOrder();
 	const [step, setStep] = useState(presetCategory ? 1 : 0);
@@ -56,7 +57,7 @@ function NewRequestWizard() {
 		formState: { errors, isSubmitting },
 	} = useForm<Values>({
 		resolver: zodResolver(schema),
-		defaultValues: { categoryId: presetCategory, priority: "MEDIUM", title: "", description: "", address: presetArea ? `${presetArea}, Dhaka` : "", preferredDate: "" },
+		defaultValues: { categoryId: presetCategory, priority: "MEDIUM", title: presetTitle, description: "", address: presetArea ? `${presetArea}, Dhaka` : "", preferredDate: "" },
 	});
 	const values = useWatch({ control });
 	const category = categories.data?.find((c) => c.id === values.categoryId);

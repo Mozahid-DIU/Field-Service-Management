@@ -47,3 +47,17 @@ export function CategoryIcon({
 		</span>
 	);
 }
+
+const SHORT_NAMES: [RegExp, string][] = [
+	[/\b(fridge|refrigerator)\b/i, "Fridge"],
+	[/\b(appliance|washing|microwave|oven)\b/i, "Appliance"],
+	[/\b(cctv|camera)\b/i, "CCTV"],
+	[/\b(plumbing|plumber|pipe|water)\b/i, "Plumbing"],
+	[/\b(electrical|electric|wiring)\b/i, "Electrical"],
+	[/\b(ac|air[- ]?condition\w*)\b/i, "AC"],
+];
+
+/** One-word label for tight spaces (icon grids). */
+export function shortServiceName(name: string): string {
+	return SHORT_NAMES.find(([pattern]) => pattern.test(name))?.[1] ?? name.split(" ")[0];
+}
