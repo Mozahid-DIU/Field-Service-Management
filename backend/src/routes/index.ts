@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { categoryRoutes } from "../modules/category/category.routes";
+import { technicianRoutes } from "../modules/technician/technician.routes";
 import { userRoutes } from "../modules/user/user.routes";
 import { workOrderRoutes } from "../modules/workOrder/workOrder.routes";
 
@@ -16,6 +17,7 @@ const moduleRoutes: ModuleRoute[] = [
 	{ path: "/users", route: userRoutes },
 	{ path: "/categories", route: categoryRoutes },
 	{ path: "/work-orders", route: workOrderRoutes },
+	{ path: "/technicians", route: technicianRoutes },
 ];
 
 for (const { path, route } of moduleRoutes) {
