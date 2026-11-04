@@ -1,0 +1,2443 @@
+{
+	"info": {
+		"name": "FixFlow — Field Service Management API",
+		"description": "REST API for a field service business: customers request repairs, admins review and assign technicians with schedule-conflict detection, technicians update job status and submit service reports, and customers pay invoices through **bKash** (sandbox).\n\n**Roles:** CUSTOMER · TECHNICIAN · ADMIN\n\n**Quick start**\n1. Set `baseUrl` (default `http://localhost:5000/api/v1`).\n2. Run the three requests in `0. Auth / Login as …` — tokens are saved automatically.\n3. Walk the `Demo flow` folder top to bottom to see the full lifecycle: request → approve → assign → en route → in progress → report (invoice) → bKash payment → feedback.\n\n**Response envelope**\n- Success: `{ success: true, message, data, meta? }`\n- Error: `{ success: false, message, errors: [{ path, message }] }`\n\n**bKash sandbox wallet** for the payment page: number `01770618575`, OTP `123456`, PIN `12121`.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000/api/v1"
+		},
+		{
+			"key": "adminEmail",
+			"value": "admin@fixflow.com"
+		},
+		{
+			"key": "adminPassword",
+			"value": "Admin@12345"
+		},
+		{
+			"key": "demoPassword",
+			"value": "Password@123"
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "customerToken",
+			"value": ""
+		},
+		{
+			"key": "technicianToken",
+			"value": ""
+		},
+		{
+			"key": "adminId",
+			"value": ""
+		},
+		{
+			"key": "customerId",
+			"value": ""
+		},
+		{
+			"key": "technicianId",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "categoryId",
+			"value": ""
+		},
+		{
+			"key": "workOrderId",
+			"value": ""
+		},
+		{
+			"key": "invoiceId",
+			"value": ""
+		},
+		{
+			"key": "paymentId",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "1. Auth",
+			"item": [
+				{
+					"name": "Login as …",
+					"item": [
+						{
+							"name": "Login as Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const body = pm.response.json();",
+											"pm.test('login succeeded', () => pm.expect(body.success).to.eql(true));",
+											"if (body.success) {",
+											"  pm.collectionVariables.set('adminToken', body.data.accessToken);",
+											"  pm.collectionVariables.set('refreshToken', body.data.refreshToken);",
+											"  pm.collectionVariables.set('adminId', body.data.user.id);",
+											"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"auth": {
+									"type": "noauth"
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							}
+						},
+						{
+							"name": "Login as Customer (Rahim)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const body = pm.response.json();",
+											"pm.test('login succeeded', () => pm.expect(body.success).to.eql(true));",
+											"if (body.success) {",
+											"  pm.collectionVariables.set('customerToken', body.data.accessToken);",
+											"  pm.collectionVariables.set('refreshToken', body.data.refreshToken);",
+											"  pm.collectionVariables.set('customerId', body.data.user.id);",
+											"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"auth": {
+									"type": "noauth"
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"rahim@example.com\",\n  \"password\": \"{{demoPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							}
+						},
+						{
+							"name": "Login as Technician (Karim — AC & Fridge)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const body = pm.response.json();",
+											"pm.test('login succeeded', () => pm.expect(body.success).to.eql(true));",
+											"if (body.success) {",
+											"  pm.collectionVariables.set('technicianToken', body.data.accessToken);",
+											"  pm.collectionVariables.set('refreshToken', body.data.refreshToken);",
+											"  pm.collectionVariables.set('technicianId', body.data.user.id);",
+											"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"auth": {
+									"type": "noauth"
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"karim.tech@fixflow.com\",\n  \"password\": \"{{demoPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Register (customer)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Nadia Islam\",\n  \"email\": \"nadia{{$randomInt}}@example.com\",\n  \"password\": \"Secret123\",\n  \"phone\": \"01912345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Always creates a CUSTOMER. A `role` field in the body is rejected."
+					}
+				},
+				{
+					"name": "Register — validation error demo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('returns 400', () => pm.response.to.have.status(400));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"N\",\n  \"email\": \"not-an-email\",\n  \"password\": \"short\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Shows the structured validation error envelope."
+					}
+				},
+				{
+					"name": "Login with Google (ID token)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idToken\": \"<Google ID token from the frontend>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/google",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"google"
+							]
+						},
+						"description": "Verifies a Google Identity Services ID token (audience = GOOGLE_CLIENT_ID). Creates or links the account."
+					}
+				},
+				{
+					"name": "Refresh token (rotation)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json();",
+									"if (body.success) pm.collectionVariables.set('refreshToken', body.data.refreshToken);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						},
+						"description": "Old refresh token is revoked on use. Re-using a revoked token revokes ALL sessions of that user."
+					}
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"{{demoPassword}}\",\n  \"newPassword\": \"NewSecret123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/change-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Profile",
+			"item": [
+				{
+					"name": "Get my profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update my profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Rahim Uddin\",\n  \"phone\": \"01811000001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update technician profile (skills/availability)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bio\": \"8 years in HVAC and refrigeration\",\n  \"isAvailable\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/me/technician-profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"technician-profile"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Service Categories",
+			"item": [
+				{
+					"name": "List active categories (public, cached)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json();",
+									"const ac = body.data.find((c) => c.name.startsWith('AC'));",
+									"if (ac) pm.collectionVariables.set('categoryId', ac.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "noauth"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create category (admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Solar Panel Maintenance\",\n  \"description\": \"Cleaning and inverter checks\",\n  \"basePrice\": 3000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update category (admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"basePrice\": 1600\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories/{{categoryId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Soft delete category (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								":id"
+							]
+						},
+						"description": "Replace :id with a category you created. Sets deletedAt instead of removing the row."
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Demo flow — full work order lifecycle",
+			"description": "Run top to bottom after logging in as all three roles. Karim (technician) has the AC skill, so the request uses the AC category.",
+			"item": [
+				{
+					"name": "① Customer creates service request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json();",
+									"pm.test('success envelope', () => pm.expect(body.success).to.eql(true));",
+									"if (body.success && body.data.id) { pm.collectionVariables.set('workOrderId', body.data.id); }"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"title\": \"AC making loud noise\",\n  \"description\": \"Outdoor unit vibrates and makes a grinding noise.\",\n  \"address\": \"House 12, Road 5, Mirpur 10, Dhaka\",\n  \"priority\": \"HIGH\",\n  \"preferredDate\": \"2026-12-20T09:00:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders"
+							]
+						}
+					}
+				},
+				{
+					"name": "② Technician tries to approve → 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('returns 403', () => pm.response.to.have.status(403));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"decision\": \"APPROVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/review",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"review"
+							]
+						}
+					}
+				},
+				{
+					"name": "③ Admin approves",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"decision\": \"APPROVE\",\n  \"note\": \"Customer is a priority client\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/review",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"review"
+							]
+						}
+					}
+				},
+				{
+					"name": "④ Admin finds free AC technicians for the slot",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/technicians?categoryId={{categoryId}}&from=2026-12-20T10:00:00.000Z&to=2026-12-20T12:00:00.000Z",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"technicians"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "{{categoryId}}"
+								},
+								{
+									"key": "from",
+									"value": "2026-12-20T10:00:00.000Z"
+								},
+								{
+									"key": "to",
+									"value": "2026-12-20T12:00:00.000Z"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "⑤ Admin assigns technician + schedules visit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"technicianId\": \"{{technicianId}}\",\n  \"scheduledStart\": \"2026-12-20T10:00:00.000Z\",\n  \"scheduledEnd\": \"2026-12-20T12:00:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/assign",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"assign"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑥ Conflict demo: overlapping slot for the same technician → 409",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"title\": \"Second AC check\",\n  \"description\": \"Use this order to try assigning Karim at 11:00 on the same day.\",\n  \"address\": \"Flat 4B, Dhanmondi 27, Dhaka\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders"
+							]
+						},
+						"description": "Create, approve and then assign this order to the same technician from 11:00–13:00 on the same day — the assign call returns 409 with the clashing work order code."
+					}
+				},
+				{
+					"name": "⑦ Technician: invalid jump to IN_PROGRESS → 409",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('returns 409', () => pm.response.to.have.status(409));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"IN_PROGRESS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"status"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑧ Technician: on the way",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"EN_ROUTE\",\n  \"note\": \"Leaving now, 20 minutes away\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"status"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑨ Technician: work started",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"IN_PROGRESS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"status"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑩ Technician submits report → COMPLETED + invoice",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json();",
+									"pm.test('success envelope', () => pm.expect(body.success).to.eql(true));",
+									"if (body.success && body.data.invoice && body.data.invoice.id) { pm.collectionVariables.set('invoiceId', body.data.invoice && body.data.invoice.id); }"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"workDone\": \"Replaced worn fan motor mount and tightened compressor bolts.\",\n  \"partsUsed\": [\n    {\n      \"name\": \"Fan motor mount\",\n      \"qty\": 1,\n      \"unitCost\": 650\n    },\n    {\n      \"name\": \"Anti-vibration pads\",\n      \"qty\": 4,\n      \"unitCost\": 75\n    }\n  ],\n  \"laborMinutes\": 90\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/report",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"report"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑪ Customer views invoice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/invoices/{{invoiceId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"invoices",
+								"{{invoiceId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑫ Customer starts bKash payment → open bkashURL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json();",
+									"if (body.success) {",
+									"  pm.collectionVariables.set('paymentId', body.data.paymentId);",
+									"  console.log('Open in browser:', body.data.bkashURL);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"invoiceId\": \"{{invoiceId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/bkash/initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"bkash",
+								"initiate"
+							]
+						},
+						"description": "Open `data.bkashURL` in a browser and pay with the sandbox wallet 01770618575 / OTP 123456 / PIN 12121. bKash redirects to /payments/bkash/callback which verifies the payment server-side and then redirects to the frontend."
+					}
+				},
+				{
+					"name": "⑬ Check payment status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/{{paymentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"{{paymentId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑭ Customer leaves feedback (after PAID)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Fixed quickly, very polite.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/feedback",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"feedback"
+							]
+						}
+					}
+				},
+				{
+					"name": "⑮ Full audit timeline of the work order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/history",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"history"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Work Orders",
+			"item": [
+				{
+					"name": "List (pagination + filters + sort)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders?page=1&limit=10&status=PENDING,APPROVED&priority=HIGH&categoryId={{categoryId}}&sortBy=createdAt&sortOrder=desc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "status",
+									"value": "PENDING,APPROVED",
+									"description": "one or comma-separated statuses"
+								},
+								{
+									"key": "priority",
+									"value": "HIGH",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "categoryId",
+									"value": "{{categoryId}}",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt",
+									"description": "createdAt | updatedAt | scheduledStart | priority | status"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								}
+							]
+						},
+						"description": "Customers only see their own orders, technicians only their assigned ones, admins see all."
+					}
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/search?q=mirpur",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "mirpur",
+									"description": "matches code, title, description, address"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update (customer, only while PENDING)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"priority\": \"URGENT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"No longer needed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"cancel"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject (admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"decision\": \"REJECT\",\n  \"note\": \"Outside our service area\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}/review",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}",
+								"review"
+							]
+						}
+					}
+				},
+				{
+					"name": "Soft delete (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/{{workOrderId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"{{workOrderId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Not found demo → 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('returns 404', () => pm.response.to.have.status(404));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders/00000000-0000-4000-8000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders",
+								"00000000-0000-4000-8000-000000000000"
+							]
+						}
+					}
+				},
+				{
+					"name": "Unauthenticated demo → 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('returns 401', () => pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "noauth"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/work-orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-orders"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Technicians & Feedback",
+			"item": [
+				{
+					"name": "My jobs (technician)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{technicianToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/technicians/me/jobs?status=ASSIGNED&date=2026-12-20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"technicians",
+								"me",
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ASSIGNED",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "date",
+									"value": "2026-12-20",
+									"description": "YYYY-MM-DD",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "List technicians (admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/technicians?available=true&sortBy=avgRating&q=karim",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"technicians"
+							],
+							"query": [
+								{
+									"key": "available",
+									"value": "true"
+								},
+								{
+									"key": "sortBy",
+									"value": "avgRating"
+								},
+								{
+									"key": "q",
+									"value": "karim",
+									"description": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Technician stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/technicians/{{technicianId}}/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"technicians",
+								"{{technicianId}}",
+								"stats"
+							]
+						}
+					}
+				},
+				{
+					"name": "Technician feedback (public)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "noauth"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/technicians/{{technicianId}}/feedback",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"technicians",
+								"{{technicianId}}",
+								"feedback"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "7. Payments & Invoices",
+			"item": [
+				{
+					"name": "Initiate bKash payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"invoiceId\": \"{{invoiceId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/bkash/initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"bkash",
+								"initiate"
+							]
+						}
+					}
+				},
+				{
+					"name": "bKash callback (called by bKash redirect)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "noauth"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/bkash/callback?paymentID=TR0011...&status=success",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"bkash",
+								"callback"
+							],
+							"query": [
+								{
+									"key": "paymentID",
+									"value": "TR0011..."
+								},
+								{
+									"key": "status",
+									"value": "success",
+									"description": "success | failure | cancel"
+								}
+							]
+						},
+						"description": "Public. The status param is never trusted — the server executes/queries the payment with bKash before marking anything PAID."
+					}
+				},
+				{
+					"name": "Payment by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/{{paymentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"{{paymentId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "My payment history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/me?page=1&limit=10&status=SUCCESS",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"me"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "status",
+									"value": "SUCCESS",
+									"description": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Invoice by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/invoices/{{invoiceId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"invoices",
+								"{{invoiceId}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "8. Admin",
+			"item": [
+				{
+					"name": "Dashboard stats (cached 60s)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard-stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"dashboard-stats"
+							]
+						}
+					}
+				},
+				{
+					"name": "List users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const body = pm.response.json();",
+									"if (body.success && body.data[0]) pm.collectionVariables.set('userId', body.data[0].id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users?role=CUSTOMER&q=&page=1&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "CUSTOMER"
+								},
+								{
+									"key": "q",
+									"value": "",
+									"description": "name/email/phone",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create technician account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jahid Hasan\",\n  \"email\": \"jahid{{$randomInt}}@fixflow.com\",\n  \"password\": \"Password@123\",\n  \"phone\": \"01711000009\",\n  \"skillIds\": [\n    \"{{categoryId}}\"\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/technicians",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"technicians"
+							]
+						}
+					}
+				},
+				{
+					"name": "Change user role",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"TECHNICIAN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/{{userId}}/role",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId}}",
+								"role"
+							]
+						}
+					}
+				},
+				{
+					"name": "Block user",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"BLOCKED\",\n  \"reason\": \"Repeated fake requests\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/{{userId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId}}",
+								"status"
+							]
+						}
+					}
+				},
+				{
+					"name": "Unblock user",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"ACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/{{userId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId}}",
+								"status"
+							]
+						}
+					}
+				},
+				{
+					"name": "Audit logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/audit-logs?page=1&limit=20&entity=WorkOrder&action=WORK_ORDER_STATUS_CHANGED",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"audit-logs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "entity",
+									"value": "WorkOrder",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "action",
+									"value": "WORK_ORDER_STATUS_CHANGED",
+									"description": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Customer calls admin route → 403",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('returns 403', () => pm.response.to.have.status(403));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard-stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"dashboard-stats"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "9. Uploads",
+			"item": [
+				{
+					"name": "Upload work order images (multipart)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/uploads/images",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"uploads",
+								"images"
+							]
+						},
+						"description": "Field `images`: 1–5 JPEG/PNG/WEBP files, max 2 MB each. Pass returned URLs as `images` when creating a work order."
+					}
+				}
+			]
+		}
+	]
+}
