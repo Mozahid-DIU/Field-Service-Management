@@ -60,6 +60,7 @@ function ActionPanel({ order, role, userId }: { order: WorkOrderDetail; role: Ro
 	}
 	if (role === "ADMIN") {
 		if (order.status === "PENDING") panels.push(<ReviewActions key="review" order={order} />);
+		if (order.status === "ASSIGNED" || order.status === "EN_ROUTE") panels.push(<AdvanceStatus key="adv" order={order} asAdmin />);
 		if (order.status === "APPROVED" || order.status === "ASSIGNED") panels.push(<AssignTechnician key="assign" order={order} />);
 		if (CANCELLABLE.includes(order.status)) panels.push(<CancelRequest key="cancel" order={order} />);
 	}

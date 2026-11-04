@@ -24,7 +24,8 @@ export default function CustomerHome() {
 
 	const dueOrders = due.data?.data ?? [];
 	const dueTotal = dueOrders.reduce((sum, o) => sum + Number(o.invoice?.total ?? 0), 0);
-	const singleBill = dueOrders.length === 1;
+	const billCount = due.data?.meta.total ?? dueOrders.length;
+	const singleBill = billCount === 1;
 	// One bill: open it directly. Several: open the list so each bill can be paid.
 	const billsHref = singleBill ? `/orders/${dueOrders[0].id}` : "/customer/requests?tab=due";
 
@@ -55,7 +56,7 @@ export default function CustomerHome() {
 						</span>
 						<div>
 							<p className="font-display text-xl font-semibold">
-								{dueOrders.length} bill{dueOrders.length > 1 ? "s" : ""} to pay
+								{billCount} bill{billCount > 1 ? "s" : ""} to pay
 							</p>
 							<p className="text-sm text-ink-soft">
 								{singleBill

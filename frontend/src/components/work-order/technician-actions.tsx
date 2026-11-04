@@ -16,7 +16,7 @@ const NEXT_STEP = {
 	EN_ROUTE: { to: "IN_PROGRESS", label: "Start work", icon: Wrench, hint: "Tap when you've arrived and begun." },
 } as const;
 
-export function AdvanceStatus({ order }: { order: WorkOrderDetail }) {
+export function AdvanceStatus({ order, asAdmin }: { order: WorkOrderDetail; asAdmin?: boolean }) {
 	const step = NEXT_STEP[order.status as keyof typeof NEXT_STEP];
 	const advance = useOrderAction(
 		order.id,
@@ -27,9 +27,11 @@ export function AdvanceStatus({ order }: { order: WorkOrderDetail }) {
 	return (
 		<div className="ticket p-5">
 			<Button size="lg" className="h-14 w-full text-base" icon={<step.icon className="size-5" />} loading={advance.isPending} onClick={() => advance.mutate(undefined)}>
-				{step.label}
+				{asAdmin ? (step.to === "EN_ROUTE" ? "Mark as on the way" : "Mark work as started") : step.label}
 			</Button>
-			<p className="mt-2 text-center text-xs text-ink-faint">{step.hint}</p>
+			<p className="mt-2 text-center text-xs text-ink-faint">
+				{asAdmin ? "Use this if the technician can't update it themselves." : step.hint}
+			</p>
 		</div>
 	);
 }

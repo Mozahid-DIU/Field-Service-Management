@@ -2,6 +2,7 @@
 
 import { CalendarClock, CheckCircle2, ChevronRight, MapPin, Phone, Star, Sun } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { StatCard, WelcomeBanner } from "@/components/ui/stat-card";
 import { StatusPill } from "@/components/ui/badges";
 import { EmptyState, Skeleton, TicketSkeleton } from "@/components/ui/states";
@@ -11,10 +12,16 @@ import { cn, rating, taka, timeRange } from "@/lib/format";
 import { useMyJobs, useTechnicianStats } from "@/lib/queries";
 import type { WorkOrder } from "@/lib/types";
 
-function todayKey(): string {
-	const d = new Date();
-	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+/** Today's start and end in the technician's own timezone, sent as ISO instants. */
+function todayWindow(): { from: string; to: string } {
+	const start = new Date();
+	start.setHours(0, 0, 0, 0);
+	const end = new Date(start);
+	end.setDate(end.getDate() + 1);
+	return { from: start.toISOString(), to: end.toISOString() };
 }
+
+const OPEN_JOBS = "ASSIGNED,EN_ROUTE,IN_PROGRESS";
 
 /** Big, thumb-friendly job card for the field. */
 function JobCard({ job, highlight }: { job: WorkOrder; highlight?: boolean }) {
@@ -60,7 +67,8 @@ export default function TechnicianToday() {
 	const { user } = useAuth();
 	const live = useMyJobs({ status: "EN_ROUTE", limit: 5 });
 	const working = useMyJobs({ status: "IN_PROGRESS", limit: 5 });
-	const today = useMyJobs({ date: todayKey(), limit: 20 });
+	const [{ from, to }] = useState(todayWindow);
+	const today = useMyJobs({ status: OPEN_JOBS, from, to, limit: 50 });
 	const upcoming = useMyJobs({ status: "ASSIGNED", limit: 6 });
 	const stats = useTechnicianStats(user?.id);
 
@@ -81,7 +89,7 @@ export default function TechnicianToday() {
 					? [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-24" />)
 					: (
 							<>
-								<StatCard label="Today" value={todays.length + current.length} icon={Sun} tone="sky" />
+								<StatCard label="Today" value={new Set([...(today.data?.data ?? []), ...current].map((j) => j.id)).size} icon={Sun} tone="sky" />
 								<StatCard label="Upcoming" value={stats.data?.upcomingJobs ?? 0} icon={CalendarClock} tone="violet" />
 								<StatCard label="Jobs done" value={profile?.totalJobs ?? 0} icon={CheckCircle2} tone="emerald" />
 								<StatCard label="Rating" value={rating(profile?.avgRating, profile?.ratingCount)} icon={Star} tone="amber" />

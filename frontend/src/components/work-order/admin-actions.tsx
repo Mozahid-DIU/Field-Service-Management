@@ -80,7 +80,10 @@ export function AssignTechnician({ order }: { order: WorkOrderDetail }) {
 	}, [start, hours]);
 	const validWindow = new Date(slot.from).getTime() > Date.now();
 
-	const techs = useTechnicians({ categoryId: order.category.id, from: slot.from, to: slot.to, limit: 50 }, open && validWindow);
+	const techs = useTechnicians(
+		{ categoryId: order.category.id, from: slot.from, to: slot.to, excludeOrderId: order.id, limit: 50 },
+		open && validWindow,
+	);
 	const assign = useOrderAction(
 		order.id,
 		() => api.post(`/work-orders/${order.id}/assign`, { technicianId, scheduledStart: slot.from, scheduledEnd: slot.to }),

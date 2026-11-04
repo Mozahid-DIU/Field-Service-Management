@@ -51,7 +51,10 @@ export function OrderTicket({ order, viewer }: { order: WorkOrder; viewer: Role 
 			</div>
 			<div className="flex shrink-0 flex-col items-end justify-between">
 				<span className="text-right">
-					<span className="block font-bold">{taka(order.invoice?.total ?? order.category.basePrice)}</span>
+					<span className="block font-bold">
+						{!order.invoice && <span className="text-xs font-medium text-ink-faint">from </span>}
+						{taka(order.invoice?.total ?? order.category.basePrice)}
+					</span>
 					{needsPayment && <span className="text-xs font-semibold text-signal-strong">Pay now</span>}
 				</span>
 				<ChevronRight className="size-5 text-ink-faint transition group-hover:translate-x-0.5" aria-hidden />

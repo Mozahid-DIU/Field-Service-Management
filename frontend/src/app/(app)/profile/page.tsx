@@ -72,7 +72,16 @@ function TechnicianCard({ me }: { me: User }) {
 	const save = useMutation({
 		mutationFn: async (body: Record<string, unknown>) =>
 			(await api.patch<ApiSuccess<User>>("/users/me/technician-profile", body)).data.data,
-		onSuccess: saved((u) => toast.success(u.technicianProfile?.isAvailable ? "You're on duty" : "Profile updated")),
+		onSuccess: (user, body) =>
+			saved(() =>
+				toast.success(
+					"isAvailable" in body
+						? user.technicianProfile?.isAvailable
+							? "You're on duty"
+							: "You're off duty"
+						: "Skills and bio saved",
+				),
+			)(user),
 		onError: (e) => toast.error(errorMessage(e)),
 	});
 	const available = profile?.isAvailable ?? true;

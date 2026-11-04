@@ -56,8 +56,8 @@ export default function AdminDashboard() {
 					<>
 						<StatCard tone="emerald" icon={Wallet} label="Payments received" value={taka(s.revenue.totalCollected)} sub={`${taka(s.revenue.last30Days)} in the last 30 days`} />
 						<StatCard tone="amber" icon={Clock} label="Waiting for payment" value={taka(s.revenue.outstanding)} sub={`${s.revenue.unpaidInvoices} unpaid bill(s)`} />
-						<StatCard tone="sky" icon={Wrench} label="Jobs in progress" value={active} sub={`${byStatus.EN_ROUTE ?? 0} on the way · ${byStatus.IN_PROGRESS ?? 0} working`} />
-						<StatCard tone="rose" icon={Bell} label="Needs your action" value={(byStatus.PENDING ?? 0) + (byStatus.APPROVED ?? 0)} sub={`${byStatus.PENDING ?? 0} to review · ${toSchedule.data?.meta.total ?? byStatus.APPROVED ?? 0} to schedule`} />
+						<StatCard tone="sky" icon={Wrench} label="Jobs in progress" value={active} sub={`${byStatus.ASSIGNED ?? 0} scheduled · ${byStatus.EN_ROUTE ?? 0} on the way · ${byStatus.IN_PROGRESS ?? 0} working`} />
+						<StatCard tone="rose" icon={Bell} label="Needs your action" value={(byStatus.PENDING ?? 0) + (byStatus.APPROVED ?? 0)} sub={`${byStatus.PENDING ?? 0} to review · ${byStatus.APPROVED ?? 0} to schedule`} />
 					</>
 				)}
 			</section>
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
 						<ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3 lg:grid-cols-5">
 							{PIPELINE.map((k) => (
 								<li key={k}>
-									<Link href={`/admin/work-orders?tab=${TAB_FOR[k]}`} className="flex items-center justify-between gap-2 rounded-md text-sm hover:text-signal-strong">
+									<Link href={`/admin/work-orders?tab=${TAB_FOR[k]}&status=${k}`} className="flex items-center justify-between gap-2 rounded-md text-sm hover:text-signal-strong">
 										<span className="flex items-center gap-2">
 											<span className="size-2.5 rounded-sm" style={{ background: `var(--st-${STATUS_META[k].tone})` }} />
 											{STATUS_META[k].label}

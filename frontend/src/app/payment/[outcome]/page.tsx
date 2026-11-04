@@ -42,11 +42,23 @@ const OUTCOMES = {
 
 type Outcome = keyof typeof OUTCOMES;
 
+const CHECKING = {
+	icon: Clock,
+	tone: "pending",
+	title: "Checking your payment…",
+	body: "One moment while we load the payment details.",
+} as const;
+
+const STATUS_TO_OUTCOME: Record<Payment["status"], Outcome> = {
+	SUCCESS: "success",
+	INITIATED: "pending",
+	FAILED: "failed",
+	CANCELLED: "cancelled",
+};
+
 function Result({ outcome }: { outcome: Outcome }) {
 	const paymentId = useSearchParams().get("paymentId");
 	const { status } = useAuth();
-	const meta = OUTCOMES[outcome] ?? OUTCOMES.failed;
-
 	const payment = useQuery({
 		queryKey: ["payment", paymentId],
 		queryFn: async () => (await api.get<ApiSuccess<Payment>>(`/payments/${paymentId}`)).data.data,
@@ -64,6 +76,11 @@ function Result({ outcome }: { outcome: Outcome }) {
 	}, [outcome, status, paymentId]);
 
 	const p = verify.data?.payment ?? payment.data;
+	// Trust the recorded payment status over the URL once we know it
+	const shown: Outcome = p ? STATUS_TO_OUTCOME[p.status] : outcome;
+	// Until the real status is loaded, don't claim success or failure from the URL alone
+	const checking = Boolean(paymentId) && !p && (status === "loading" || payment.isLoading);
+	const meta = checking ? CHECKING : (OUTCOMES[shown] ?? OUTCOMES.failed);
 	const Icon = meta.icon;
 	const orderHref = p ? `/orders/${p.invoice.workOrder.id}` : "/customer";
 
@@ -104,13 +121,13 @@ function Result({ outcome }: { outcome: Outcome }) {
 				)}
 				{verify.error && <p className="mt-3 text-center text-sm text-[var(--st-rejected)]">{errorMessage(verify.error)}</p>}
 				<div className="mt-6 flex flex-col gap-2">
-					{outcome === "pending" && (
+					{shown === "pending" && (
 						<Button variant="outline" icon={<RefreshCw className="size-4" />} loading={verify.isPending} onClick={() => verify.mutate()}>
 							Check again
 						</Button>
 					)}
-					<ButtonLink href={orderHref} variant={outcome === "success" ? "primary" : "ink"}>
-						{outcome === "success" ? "Back to my request" : "Return to work order"}
+					<ButtonLink href={orderHref} variant={shown === "success" ? "primary" : "ink"}>
+						{shown === "success" ? "Back to my request" : "Return to work order"}
 					</ButtonLink>
 				</div>
 			</div>

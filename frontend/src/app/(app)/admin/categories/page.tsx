@@ -35,7 +35,8 @@ function CategoryDialog({ category, open, onClose }: { category: Category | null
 
 	const save = useMutation({
 		mutationFn: (values: Output) => {
-			const body = { ...values, ...(values.description ? {} : { description: undefined }) };
+			// PATCH keeps "" so a cleared description is saved; POST simply omits it
+			const body = category || values.description ? values : { ...values, description: undefined };
 			return category ? api.patch(`/categories/${category.id}`, body) : api.post("/categories", body);
 		},
 		onSuccess: () => {

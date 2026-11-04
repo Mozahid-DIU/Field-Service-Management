@@ -8,7 +8,8 @@ import { EmptyState, ErrorState, TicketSkeleton } from "@/components/ui/states";
 import { errorMessage } from "@/lib/api";
 import { cn } from "@/lib/format";
 import { useWorkOrders } from "@/lib/queries";
-import type { Role } from "@/lib/types";
+import { STATUS_META } from "@/lib/status";
+import type { Role, WorkOrderStatus } from "@/lib/types";
 import { useDebounced, useUrlState } from "@/lib/use-url-state";
 import { OrderTicket } from "./order-ticket";
 
@@ -19,7 +20,7 @@ export interface OrderTab {
 	statuses: string;
 }
 
-const DEFAULTS = { tab: "", q: "", page: "1", sort: "createdAt", priority: "" };
+const DEFAULTS = { tab: "", q: "", page: "1", sort: "createdAt", priority: "", status: "" };
 const PAGE_SIZE = 8;
 
 export function OrderList({
@@ -42,8 +43,9 @@ export function OrderList({
 	}, [debouncedSearch, state.q, setState]);
 
 	const tab = tabs.find((t) => t.key === state.tab) ?? tabs[0];
+	const statusFilter = state.status && STATUS_META[state.status as WorkOrderStatus] ? state.status : "";
 	const query = useWorkOrders({
-		status: tab.statuses,
+		status: statusFilter || tab.statuses,
 		q: state.q,
 		page: state.page,
 		limit: PAGE_SIZE,
@@ -62,7 +64,7 @@ export function OrderList({
 							type="button"
 							role="tab"
 							aria-selected={t.key === tab.key}
-							onClick={() => setState({ tab: t.key })}
+							onClick={() => setState({ tab: t.key, status: "" })}
 							className={cn(
 								"shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition-colors",
 								t.key === tab.key ? "bg-signal text-white" : "bg-card text-ink-soft ring-1 ring-line hover:text-ink",
@@ -105,6 +107,20 @@ export function OrderList({
 					</Select>
 				</div>
 			</div>
+
+			{statusFilter && (
+				<div className="-mt-2 flex items-center gap-2 text-sm text-ink-soft">
+					Showing only
+					<button
+						type="button"
+						onClick={() => setState({ status: "" })}
+						className="inline-flex cursor-pointer items-center gap-1 rounded-full bg-signal-wash px-3 py-1 font-semibold text-signal-strong hover:bg-signal/15"
+					>
+						{STATUS_META[statusFilter as WorkOrderStatus].label}
+						<X className="size-3.5" aria-label="Clear filter" />
+					</button>
+				</div>
+			)}
 
 			<div className={cn("transition-opacity", query.isPlaceholderData && "opacity-60")}>
 				{query.isLoading ? (

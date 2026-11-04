@@ -126,6 +126,8 @@ export function useInvalidateOrder() {
 		void qc.invalidateQueries({ queryKey: ["work-orders"] });
 		void qc.invalidateQueries({ queryKey: ["my-jobs"] });
 		void qc.invalidateQueries({ queryKey: keys.stats });
+		void qc.invalidateQueries({ queryKey: ["technician-stats"] });
+		void qc.invalidateQueries({ queryKey: ["technicians"] });
 		if (id) void qc.invalidateQueries({ queryKey: ["work-order", id] });
 	};
 }

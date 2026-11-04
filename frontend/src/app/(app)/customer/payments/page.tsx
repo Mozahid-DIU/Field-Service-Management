@@ -28,9 +28,11 @@ export default function PaymentsPage() {
 				<EmptyState icon={<CreditCard className="size-6" />} title="No payments yet" description="Invoices appear after a technician completes your job." />
 			) : (
 				<>
-					<p className="mb-3 text-sm text-ink-soft">
-						Paid on this page: <span className="font-mono font-semibold text-ink">{taka(paid)}</span>
-					</p>
+					{(data?.meta.totalPages ?? 1) <= 1 && (
+						<p className="mb-3 text-sm text-ink-soft">
+							Total paid: <span className="font-semibold text-ink">{taka(paid)}</span>
+						</p>
+					)}
 					<div className="ticket overflow-x-auto">
 						<table className="w-full min-w-[640px] text-sm">
 							<thead>
