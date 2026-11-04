@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { categoryRoutes } from "../modules/category/category.routes";
 import { userRoutes } from "../modules/user/user.routes";
+import { workOrderRoutes } from "../modules/workOrder/workOrder.routes";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ const moduleRoutes: ModuleRoute[] = [
 	{ path: "/auth", route: authRoutes },
 	{ path: "/users", route: userRoutes },
 	{ path: "/categories", route: categoryRoutes },
+	{ path: "/work-orders", route: workOrderRoutes },
 ];
 
 for (const { path, route } of moduleRoutes) {
