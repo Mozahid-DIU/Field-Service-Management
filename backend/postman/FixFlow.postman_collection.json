@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "FixFlow — Field Service Management API",
-		"description": "REST API for a field service business: customers request repairs, admins review and assign technicians with schedule-conflict detection, technicians update job status and submit service reports, and customers pay invoices through **bKash** (sandbox).\n\n**Roles:** CUSTOMER · TECHNICIAN · ADMIN\n\n**Quick start**\n1. Set `baseUrl` (default `http://localhost:5000/api/v1`).\n2. Run the three requests in `0. Auth / Login as …` — tokens are saved automatically.\n3. Walk the `Demo flow` folder top to bottom to see the full lifecycle: request → approve → assign → en route → in progress → report (invoice) → bKash payment → feedback.\n\n**Response envelope**\n- Success: `{ success: true, message, data, meta? }`\n- Error: `{ success: false, message, errors: [{ path, message }] }`\n\n**bKash sandbox wallet** for the payment page: number `01770618575`, OTP `123456`, PIN `12121`.",
+		"description": "REST API for a field service business: customers request repairs, admins review and assign technicians with schedule-conflict detection, technicians update job status and submit service reports, and customers pay invoices through **bKash** (sandbox).\n\n**Roles:** CUSTOMER · TECHNICIAN · ADMIN\n\n**Quick start**\n1. Set `baseUrl` (default `http://localhost:5000/api/v1`).\n2. Run the three requests in `0. Auth / Login as …` — tokens are saved automatically.\n3. Walk the `Demo flow` folder top to bottom to see the full lifecycle: request → approve → assign → en route → in progress → report (invoice) → bKash payment → feedback.\n\n**Response envelope**\n- Success: `{ success: true, message, data, meta? }`\n- Error: `{ success: false, message, errors: [{ path, message }] }`\n\n**bKash sandbox wallet** for the payment page: number `01619777283`, OTP `123456`, PIN `12121`.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
@@ -1138,7 +1138,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["payments", "bkash", "initiate"]
 						},
-						"description": "Open `data.bkashURL` in a browser and pay with the sandbox wallet 01770618575 / OTP 123456 / PIN 12121. bKash redirects to /payments/bkash/callback which verifies the payment server-side and then redirects to the frontend."
+						"description": "Open `data.bkashURL` in a browser and pay with the sandbox wallet 01619777283 / OTP 123456 / PIN 12121. bKash redirects to /payments/bkash/callback which verifies the payment server-side and then redirects to the frontend."
 					}
 				},
 				{

@@ -93,7 +93,7 @@ Because both admins must take the same technician row lock, two simultaneous boo
 ```
 POST /payments/bkash/initiate {invoiceId}
   → grant token (cached) → create payment → Payment(INITIATED) → { bkashURL }
-Customer pays on bkashURL (sandbox wallet 01770618575 · OTP 123456 · PIN 12121)
+Customer pays on bkashURL (sandbox wallet 01619777283 · OTP 123456 · PIN 12121 — other docs wallets may report "Insufficient balance")
 bKash → GET /payments/bkash/callback?paymentID=…&status=success|failure|cancel
   → never trusts `status`: execute → (fallback) query → amount must equal invoice total
   → one transaction: Payment SUCCESS · Invoice PAID · WorkOrder PAID · AuditLog
