@@ -42,10 +42,14 @@ function orderByFor(
 async function list(query: ListTechniciansQuery) {
 	const busyIds =
 		query.from && query.to
-			? await findBusyTechnicianIds(prisma, {
-					start: query.from,
-					end: query.to,
-				})
+			? await findBusyTechnicianIds(
+					prisma,
+					{
+						start: query.from,
+						end: query.to,
+					},
+					query.excludeOrderId,
+				)
 			: null;
 
 	const where: Prisma.UserWhereInput = {
@@ -88,18 +92,17 @@ async function list(query: ListTechniciansQuery) {
 
 async function myJobs(technicianId: string, query: MyJobsQuery) {
 	const dayStart = query.date ? new Date(`${query.date}T00:00:00.000Z`) : null;
+	const window =
+		query.from && query.to
+			? { gte: query.from, lt: query.to }
+			: dayStart
+				? { gte: dayStart, lt: new Date(dayStart.getTime() + DAY_MS) }
+				: null;
 	const where: Prisma.WorkOrderWhereInput = {
 		technicianId,
 		deletedAt: null,
-		...(query.status ? { status: query.status } : {}),
-		...(dayStart
-			? {
-					scheduledStart: {
-						gte: dayStart,
-						lt: new Date(dayStart.getTime() + DAY_MS),
-					},
-				}
-			: {}),
+		...(query.status ? { status: { in: query.status } } : {}),
+		...(window ? { scheduledStart: window } : {}),
 	};
 
 	const [data, total] = await prisma.$transaction([

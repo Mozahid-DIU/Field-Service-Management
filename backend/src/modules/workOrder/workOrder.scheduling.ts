@@ -45,11 +45,13 @@ export async function findScheduleConflict(
 export async function findBusyTechnicianIds(
 	db: Db,
 	window: TimeWindow,
+	excludeOrderId?: string,
 ): Promise<Set<string>> {
 	const busy = await db.workOrder.findMany({
 		where: {
 			deletedAt: null,
 			technicianId: { not: null },
+			...(excludeOrderId ? { id: { not: excludeOrderId } } : {}),
 			status: { in: ACTIVE_SCHEDULE_STATUSES },
 			...overlapsWindow(window),
 		},

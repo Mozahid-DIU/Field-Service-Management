@@ -54,7 +54,7 @@ export const updateWorkOrderSchema = createWorkOrderSchema
 	});
 
 /** Accepts ?status=PENDING or ?status=PENDING,APPROVED */
-const statusListSchema = z
+export const statusListSchema = z
 	.string()
 	.transform((value) => value.split(",").map((s) => s.trim().toUpperCase()))
 	.pipe(z.array(z.enum(STATUSES)).min(1));

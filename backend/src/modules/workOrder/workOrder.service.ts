@@ -4,6 +4,7 @@ import { prisma } from "../../config/prisma";
 import type { AuthUser } from "../../types/express";
 import { AppError } from "../../utils/AppError";
 import { AuditAction, recordAudit } from "../../utils/auditLog";
+import { CacheKeys, cache } from "../../utils/cache";
 import { generateWorkOrderCode } from "../../utils/codeGenerator";
 import { buildMeta, toSkipTake } from "../../utils/pagination";
 import {
@@ -39,7 +40,7 @@ async function create(input: CreateWorkOrderInput, customer: AuthUser) {
 	// Retry on the (very unlikely) random code collision
 	for (let attempt = 1; attempt <= CODE_RETRY_LIMIT; attempt++) {
 		try {
-			return await prisma.$transaction(async (tx) => {
+			const created = await prisma.$transaction(async (tx) => {
 				const order = await tx.workOrder.create({
 					data: {
 						...input,
@@ -60,6 +61,8 @@ async function create(input: CreateWorkOrderInput, customer: AuthUser) {
 				);
 				return order;
 			});
+			await cache.del(CacheKeys.dashboardStats);
+			return created;
 		} catch (error) {
 			const isCodeClash =
 				error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -197,6 +200,7 @@ async function softDelete(id: string, admin: AuthUser) {
 			tx,
 		);
 	});
+	await cache.del(CacheKeys.dashboardStats);
 }
 
 async function history(id: string, user: AuthUser) {

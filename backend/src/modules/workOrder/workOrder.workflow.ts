@@ -3,6 +3,7 @@ import { prisma } from "../../config/prisma";
 import type { AuthUser } from "../../types/express";
 import { AppError } from "../../utils/AppError";
 import { AuditAction, recordAudit } from "../../utils/auditLog";
+import { CacheKeys, cache } from "../../utils/cache";
 import { generateInvoiceNo } from "../../utils/codeGenerator";
 import { assertCanView, workOrderDetailInclude } from "./workOrder.access";
 import {
@@ -78,11 +79,14 @@ export async function applyTransition(
 	);
 }
 
-const loadDetail = (id: string) =>
-	prisma.workOrder.findUniqueOrThrow({
+/** Runs after every workflow change: drop cached dashboard numbers, return the fresh order. */
+async function loadDetail(id: string) {
+	await cache.del(CacheKeys.dashboardStats);
+	return prisma.workOrder.findUniqueOrThrow({
 		where: { id },
 		include: workOrderDetailInclude,
 	});
+}
 
 async function review(
 	id: string,
