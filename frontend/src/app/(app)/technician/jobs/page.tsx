@@ -13,7 +13,7 @@ const TABS = [
 export default function TechnicianJobsPage() {
 	return (
 		<>
-			<PageHeader eyebrow="My jobs" title="All assigned jobs" description="Everything dispatch has booked for you." />
+			<PageHeader eyebrow="My jobs" title="My jobs" description="All jobs assigned to you." />
 			<Suspense>
 				<OrderList viewer="TECHNICIAN" tabs={TABS} />
 			</Suspense>

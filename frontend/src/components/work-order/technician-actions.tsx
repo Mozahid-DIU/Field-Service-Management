@@ -21,7 +21,7 @@ export function AdvanceStatus({ order }: { order: WorkOrderDetail }) {
 	const advance = useOrderAction(
 		order.id,
 		() => api.patch(`/work-orders/${order.id}/status`, { status: step.to }),
-		step?.to === "EN_ROUTE" ? "Customer notified: you're on the way" : "Job started — good luck!",
+		step?.to === "EN_ROUTE" ? "The customer knows you're on the way" : "Job started",
 	);
 	if (!step) return null;
 	return (
@@ -65,7 +65,7 @@ export function ServiceReportForm({ order }: { order: WorkOrderDetail }) {
 	const submit = useOrderAction(
 		order.id,
 		(values: ReportOutput) => api.post(`/work-orders/${order.id}/report`, values),
-		"Job completed — invoice sent to the customer",
+		"Job completed. Invoice sent to the customer.",
 	);
 
 	return (
@@ -83,7 +83,7 @@ export function ServiceReportForm({ order }: { order: WorkOrderDetail }) {
 
 			<div className="flex flex-col gap-2">
 				<p className="text-sm font-semibold">Parts used</p>
-				{fields.length === 0 && <p className="text-sm text-ink-faint">No parts — service fee only.</p>}
+				{fields.length === 0 && <p className="text-sm text-ink-faint">No parts used.</p>}
 				{fields.map((field, index) => (
 					<div key={field.id} className="grid grid-cols-[1fr_64px_96px_36px] items-start gap-2">
 						<Input placeholder="Part" aria-label="Part name" {...register(`partsUsed.${index}.name`)} aria-invalid={Boolean(errors.partsUsed?.[index]?.name)} />

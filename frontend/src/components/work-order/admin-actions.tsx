@@ -20,7 +20,7 @@ export function ReviewActions({ order }: { order: WorkOrderDetail }) {
 	const review = useOrderAction(
 		order.id,
 		(vars: { decision: "APPROVE" | "REJECT"; note?: string }) => api.patch(`/work-orders/${order.id}/review`, vars),
-		(vars) => (vars.decision === "APPROVE" ? "Request approved — now assign a technician" : "Request rejected"),
+		(vars) => (vars.decision === "APPROVE" ? "Request approved" : "Request rejected"),
 		() => setRejecting(false),
 	);
 	return (
@@ -84,7 +84,7 @@ export function AssignTechnician({ order }: { order: WorkOrderDetail }) {
 	const assign = useOrderAction(
 		order.id,
 		() => api.post(`/work-orders/${order.id}/assign`, { technicianId, scheduledStart: slot.from, scheduledEnd: slot.to }),
-		"Technician assigned — visit scheduled",
+		"Visit scheduled",
 		() => setOpen(false),
 	);
 

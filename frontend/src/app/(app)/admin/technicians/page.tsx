@@ -126,7 +126,7 @@ export default function TechniciansPage() {
 			<PageHeader
 				eyebrow="Workforce"
 				title="Technicians"
-				description="Skills, ratings and availability of your field team."
+				description="Your team, their skills and ratings."
 				actions={
 					<Button icon={<Plus className="size-4" />} onClick={() => setAdding(true)}>
 						Add technician

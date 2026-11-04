@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { EmptyState, TicketSkeleton } from "@/components/ui/states";
 import { OrderTicket } from "@/components/work-order/order-ticket";
 import { useAuth } from "@/lib/auth-store";
+import { CategoryIcon } from "@/lib/category-icon";
 import { taka } from "@/lib/format";
 import { useCategories, useWorkOrders } from "@/lib/queries";
 
@@ -33,7 +34,7 @@ export default function CustomerHome() {
 						{greeting()}, {user?.name.split(" ")[0]}.
 					</>
 				}
-				description="Here's everything happening at your place."
+				description="Here's what's happening with your requests."
 				actions={
 					<ButtonLink href="/customer/new" size="lg" icon={<Plus className="size-5" />}>
 						Book a service
@@ -44,20 +45,20 @@ export default function CustomerHome() {
 			{dueOrders.length > 0 && (
 				<Link
 					href={`/orders/${dueOrders[0].id}`}
-					className="group mb-8 flex flex-col gap-4 overflow-hidden rounded-2xl bg-ink p-6 text-paper shadow-lift animate-rise sm:flex-row sm:items-center sm:justify-between"
+					className="group mb-8 flex flex-col gap-4 rounded-2xl border border-signal/30 bg-signal-wash p-5 sm:flex-row sm:items-center sm:justify-between"
 				>
 					<div className="flex items-center gap-4">
-						<span className="grid size-12 place-items-center rounded-xl bg-signal text-white">
+						<span className="grid size-11 place-items-center rounded-xl bg-signal text-white">
 							<Wallet className="size-6" aria-hidden />
 						</span>
 						<div>
 							<p className="font-display text-xl font-semibold">
-								{dueOrders.length} invoice{dueOrders.length > 1 ? "s" : ""} ready to pay
+								{dueOrders.length} bill{dueOrders.length > 1 ? "s" : ""} to pay
 							</p>
-							<p className="text-sm text-paper/60">Work is done. Settle securely with bKash in a few taps.</p>
+							<p className="text-sm text-ink-soft">The work is done. Pay with bKash in a few taps.</p>
 						</div>
 					</div>
-					<span className="flex items-center gap-3 font-mono text-2xl font-semibold">
+					<span className="flex items-center gap-2 text-xl font-bold text-signal-strong">
 						{taka(dueTotal)}
 						<ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
 					</span>
@@ -66,7 +67,7 @@ export default function CustomerHome() {
 
 			<section className="mb-10">
 				<div className="mb-4 flex items-baseline justify-between">
-					<h2 className="font-display text-2xl font-bold">Active requests</h2>
+					<h2 className="text-lg font-bold">Ongoing requests</h2>
 					<Link href="/customer/requests" className="text-sm font-semibold text-ink-soft hover:text-ink">
 						View all →
 					</Link>
@@ -76,7 +77,7 @@ export default function CustomerHome() {
 				) : (active.data?.data.length ?? 0) === 0 ? (
 					<EmptyState
 						title="Nothing in progress"
-						description="When something breaks, book a technician — we'll handle the rest."
+						description="When something needs fixing, book a technician and we'll take care of the rest."
 						action={<ButtonLink href="/customer/new">Book a service</ButtonLink>}
 					/>
 				) : (
@@ -89,7 +90,7 @@ export default function CustomerHome() {
 			</section>
 
 			<section>
-				<h2 className="mb-4 font-display text-2xl font-bold">Book again</h2>
+				<h2 className="mb-4 text-lg font-bold">Book a service</h2>
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 stagger">
 					{categories.data?.map((category) => (
 						<Link
@@ -97,7 +98,7 @@ export default function CustomerHome() {
 							href={`/customer/new?category=${category.id}`}
 							className="ticket group flex flex-col justify-between gap-6 p-4 transition hover:-translate-y-0.5 hover:border-ink"
 						>
-							<p className="font-display font-semibold leading-tight">{category.name}</p>
+							<span className="flex items-center gap-3"><CategoryIcon name={category.name} size="sm" /><span className="font-semibold leading-tight">{category.name}</span></span>
 							<p className="flex items-center justify-between font-mono text-sm text-ink-soft">
 								from {taka(category.basePrice)}
 								<ArrowRight className="size-4 text-signal opacity-0 transition group-hover:opacity-100" />

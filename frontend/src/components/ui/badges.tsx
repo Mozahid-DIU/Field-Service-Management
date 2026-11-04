@@ -34,19 +34,10 @@ export function StatusPill({
 
 export function PriorityTag({ priority }: { priority: Priority }) {
 	const meta = PRIORITY_META[priority];
-	const bars = { LOW: 1, MEDIUM: 2, HIGH: 3, URGENT: 4 }[priority];
 	return (
-		<span className={cn("inline-flex items-center gap-1.5 text-xs", meta.className)} title={`${meta.label} priority`}>
-			<span className="flex items-end gap-[2px]" aria-hidden>
-				{[1, 2, 3, 4].map((i) => (
-					<span
-						key={i}
-						className={cn("w-[3px] rounded-sm", i <= bars ? "bg-current" : "bg-line")}
-						style={{ height: 4 + i * 2 }}
-					/>
-				))}
-			</span>
-			{meta.label}
+		<span className={cn("inline-flex items-center gap-1.5 text-xs font-medium", meta.className)}>
+			<span className="size-1.5 rounded-full bg-current" aria-hidden />
+			{meta.label} priority
 		</span>
 	);
 }
@@ -65,23 +56,23 @@ export function MoneyStatus({ status }: { status: PaymentStatus | InvoiceStatus 
 	const tone = PAYMENT_TONE[status];
 	return (
 		<span
-			className="inline-flex rounded-md px-2 py-0.5 font-mono text-[11px] font-semibold tracking-wide"
+			className="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold"
 			style={{ color: `var(--st-${tone})`, background: `var(--st-${tone}-bg)` }}
 		>
-			{status}
+			{status.charAt(0) + status.slice(1).toLowerCase()}
 		</span>
 	);
 }
 
 export function RoleTag({ role }: { role: "CUSTOMER" | "TECHNICIAN" | "ADMIN" }) {
 	const styles = {
-		ADMIN: "bg-ink text-paper",
+		ADMIN: "bg-ink/8 text-ink",
 		TECHNICIAN: "bg-signal-wash text-signal-strong",
 		CUSTOMER: "bg-paper-sunken text-ink-soft",
 	}[role];
 	return (
-		<span className={cn("rounded-md px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wider", styles)}>
-			{role}
+		<span className={cn("rounded-full px-2 py-0.5 text-[11px] font-semibold", styles)}>
+			{role.charAt(0) + role.slice(1).toLowerCase()}
 		</span>
 	);
 }

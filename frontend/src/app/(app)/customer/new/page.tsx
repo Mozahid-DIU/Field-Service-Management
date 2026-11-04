@@ -160,7 +160,7 @@ function NewRequestWizard() {
 						</Field>
 						<div>
 							<p className="mb-2 text-sm font-semibold">
-								Photos <span className="font-normal text-ink-faint">— optional, up to 5</span>
+								Photos <span className="font-normal text-ink-faint">(optional, up to 5)</span>
 							</p>
 							<div className="flex flex-wrap gap-2">
 								{images.map((src) => (

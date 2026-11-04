@@ -7,19 +7,8 @@ import type { Role } from "@/lib/types";
 
 function FullScreenLoader() {
 	return (
-		<div className="grid min-h-dvh place-items-center" aria-busy="true" aria-label="Loading your workspace">
-			<div className="flex flex-col items-center gap-4">
-				<div className="flex gap-1.5">
-					{[0, 1, 2].map((i) => (
-						<span
-							key={i}
-							className="size-2.5 animate-bounce rounded-full bg-signal"
-							style={{ animationDelay: `${i * 120}ms` }}
-						/>
-					))}
-				</div>
-				<p className="font-mono text-xs tracking-widest text-ink-faint uppercase">Loading workspace</p>
-			</div>
+		<div className="grid min-h-dvh place-items-center" aria-busy="true" aria-label="Loading">
+			<div className="size-8 animate-spin rounded-full border-[3px] border-signal-wash border-t-signal" />
 		</div>
 	);
 }

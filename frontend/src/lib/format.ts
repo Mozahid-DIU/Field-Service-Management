@@ -14,7 +14,7 @@ const takaFormatter = new Intl.NumberFormat("en-BD", {
 
 export function taka(value: Money | null | undefined): string {
 	const amount = Number(value ?? 0);
-	return `৳${takaFormatter.format(Number.isFinite(amount) ? amount : 0)}`;
+	return `Tk ${takaFormatter.format(Number.isFinite(amount) ? amount : 0)}`;
 }
 
 export function shortDate(value: string | Date | null | undefined): string {

@@ -131,7 +131,7 @@ function PasswordCard({ me }: { me: User }) {
 	const change = useMutation({
 		mutationFn: () => api.patch("/auth/change-password", { currentPassword: current, newPassword: next }),
 		onSuccess: async () => {
-			toast.success("Password changed — please sign in again");
+			toast.success("Password changed. Please sign in again.");
 			await logout();
 		},
 		onError: (e) => toast.error(errorMessage(e)),

@@ -18,7 +18,7 @@ export function StatusRail({ status, compact }: { status: WorkOrderStatus; compa
 				className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold"
 				style={{ color: `var(--st-${meta.tone})`, background: `var(--st-${meta.tone}-bg)` }}
 			>
-				<X className="size-4" aria-hidden /> {meta.label} — this request is closed.
+				<X className="size-4" aria-hidden /> This request was {meta.label.toLowerCase()}.
 			</div>
 		);
 	}
@@ -39,7 +39,7 @@ export function StatusRail({ status, compact }: { status: WorkOrderStatus; compa
 							<span
 								className={cn(
 									"absolute top-[11px] right-1/2 h-[3px] w-full -translate-y-1/2 rounded-full",
-									index <= currentIndex ? "bg-ink" : "bg-line",
+									index <= currentIndex ? "bg-signal" : "bg-line",
 								)}
 								aria-hidden
 							/>
@@ -47,7 +47,7 @@ export function StatusRail({ status, compact }: { status: WorkOrderStatus; compa
 						<span
 							className={cn(
 								"relative z-10 grid size-[22px] place-items-center rounded-full border-2 transition-all",
-								done && "border-ink bg-ink text-paper",
+								done && "border-signal bg-signal text-white",
 								current && "scale-110 border-transparent text-white live-dot",
 								!done && !current && "border-line-strong bg-card",
 							)}

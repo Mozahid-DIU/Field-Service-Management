@@ -1,15 +1,17 @@
 "use client";
 
+import { CheckCircle2, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type ReactNode, useEffect } from "react";
 import { Logo } from "@/components/brand";
+import { Avatar } from "@/components/ui/avatar";
 import { StatusPill } from "@/components/ui/badges";
 import { homeFor, useAuth } from "@/lib/auth-store";
 
-const BOARD = [
-	{ code: "WO-1104-3FA9", title: "AC not cooling", who: "Karim · 10:00", status: "EN_ROUTE" as const },
-	{ code: "WO-1104-81C2", title: "Kitchen sink leak", who: "Rafiq · 12:30", status: "ASSIGNED" as const },
-	{ code: "WO-1103-7D10", title: "Main breaker tripping", who: "Sumon · paid ৳1,650", status: "PAID" as const },
+const BENEFITS = [
+	"Skilled technicians for AC, plumbing, electrical and more",
+	"See when your technician is on the way",
+	"Clear bill and easy payment with bKash",
 ];
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
@@ -21,66 +23,44 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 	}, [status, user, router]);
 
 	return (
-		<div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-			<div className="flex flex-col px-5 py-6 sm:px-10 lg:px-16">
+		<div className="grid min-h-dvh bg-card lg:grid-cols-2">
+			<div className="flex flex-col px-5 py-6 sm:px-10">
 				<Logo />
 				<div className="flex flex-1 items-center py-10">
-					<div className="mx-auto w-full max-w-md animate-rise">{children}</div>
+					<div className="mx-auto w-full max-w-sm animate-rise">{children}</div>
 				</div>
-				<p className="text-xs text-ink-faint">© {new Date().getFullYear()} FixFlow · Payments secured by bKash</p>
 			</div>
 
-			{/* Visual side: a live dispatch board, the product in one glance */}
-			<aside className="relative hidden overflow-hidden bg-ink p-12 text-paper lg:flex lg:flex-col lg:justify-between">
-				<div
-					className="pointer-events-none absolute inset-0 opacity-[0.07]"
-					style={{
-						backgroundImage:
-							"linear-gradient(var(--paper) 1px, transparent 1px), linear-gradient(90deg, var(--paper) 1px, transparent 1px)",
-						backgroundSize: "44px 44px",
-					}}
-					aria-hidden
-				/>
-				<div className="pointer-events-none absolute -top-40 -right-40 size-[520px] rounded-full bg-signal/25 blur-[120px]" aria-hidden />
+			<aside className="hidden flex-col justify-center bg-signal-wash px-14 lg:flex">
+				<div className="max-w-md">
+					<h2 className="text-3xl leading-snug font-bold text-ink">Home repairs, without the hassle.</h2>
+					<ul className="mt-6 flex flex-col gap-3">
+						{BENEFITS.map((benefit) => (
+							<li key={benefit} className="flex items-start gap-3 text-ink-soft">
+								<CheckCircle2 className="mt-0.5 size-5 shrink-0 text-signal" aria-hidden />
+								{benefit}
+							</li>
+						))}
+					</ul>
 
-				<div className="relative">
-					<p className="font-mono text-xs tracking-[0.2em] text-signal uppercase">Dispatch board · live</p>
-					<h2 className="mt-4 max-w-md font-display text-5xl leading-[0.95] font-bold tracking-tight">
-						Every repair,
-						<br />
-						<span className="text-signal">tracked</span> door to door.
-					</h2>
-				</div>
-
-				<ul className="relative flex flex-col gap-3 stagger">
-					{BOARD.map((item, index) => (
-						<li
-							key={item.code}
-							className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur"
-							style={{ marginLeft: index * 28 }}
-						>
-							<div>
-								<p className="font-mono text-[11px] text-paper/50">{item.code}</p>
-								<p className="font-display text-lg font-semibold">{item.title}</p>
-								<p className="text-sm text-paper/60">{item.who}</p>
-							</div>
-							<StatusPill status={item.status} />
-						</li>
-					))}
-				</ul>
-
-				<dl className="relative grid grid-cols-3 gap-6 border-t border-white/10 pt-6">
-					{[
-						["3 roles", "customer · tech · admin"],
-						["0", "double bookings"],
-						["bKash", "verified payments"],
-					].map(([value, label]) => (
-						<div key={label}>
-							<dt className="font-display text-2xl font-bold">{value}</dt>
-							<dd className="text-xs text-paper/50">{label}</dd>
+					<div className="mt-10 rounded-2xl bg-card p-5 shadow-lift">
+						<div className="flex items-center justify-between">
+							<p className="font-semibold">AC not cooling</p>
+							<StatusPill status="EN_ROUTE" size="sm" />
 						</div>
-					))}
-				</dl>
+						<p className="mt-1 text-sm text-ink-soft">Today, 3:00 PM - 5:00 PM</p>
+						<div className="mt-4 flex items-center gap-3 border-t border-line pt-4">
+							<Avatar name="Karim Hossain" size={36} />
+							<div className="flex-1">
+								<p className="text-sm font-semibold">Karim Hossain</p>
+								<p className="text-xs text-ink-faint">Your technician</p>
+							</div>
+							<span className="grid size-9 place-items-center rounded-full bg-signal-wash text-signal-strong" aria-hidden>
+								<Phone className="size-4" />
+							</span>
+						</div>
+					</div>
+				</div>
 			</aside>
 		</div>
 	);

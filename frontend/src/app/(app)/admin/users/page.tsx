@@ -47,7 +47,7 @@ export default function UsersPage() {
 
 	return (
 		<>
-			<PageHeader eyebrow="Access control" title="Users & roles" description="Change roles or block accounts. Every change is written to the audit log and signs the user out." />
+			<PageHeader eyebrow="Access control" title="Users" description="Manage roles and account access." />
 
 			<div className="mb-5 flex flex-col gap-2 sm:flex-row">
 				<div className="relative flex-1">

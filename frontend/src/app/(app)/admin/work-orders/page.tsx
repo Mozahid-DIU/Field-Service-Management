@@ -17,7 +17,7 @@ const TABS = [
 export default function AdminWorkOrdersPage() {
 	return (
 		<>
-			<PageHeader eyebrow="Work orders" title="Dispatch queue" description="Review, schedule and follow every job from request to payment." />
+			<PageHeader eyebrow="Work orders" title="Work orders" description="Review new requests, book technicians and follow each job." />
 			<Suspense>
 				<OrderList viewer="ADMIN" tabs={TABS} showPriority />
 			</Suspense>

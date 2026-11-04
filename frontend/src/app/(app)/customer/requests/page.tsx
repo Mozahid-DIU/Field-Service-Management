@@ -19,8 +19,8 @@ export default function MyRequestsPage() {
 		<>
 			<PageHeader
 				eyebrow="My requests"
-				title="Service history"
-				description="Every request you've made, from first report to final payment."
+				title="My requests"
+				description="All your service requests in one place."
 				actions={
 					<ButtonLink href="/customer/new" icon={<Plus className="size-4" />}>
 						New request

@@ -70,7 +70,7 @@ function CategoryDialog({ category, open, onClose }: { category: Category | null
 				<Field label="Description" htmlFor="c-desc" optional error={errors.description?.message}>
 					<Textarea rows={3} {...describedBy("c-desc", errors.description?.message)} {...register("description")} />
 				</Field>
-				<Field label="Base price (৳)" htmlFor="c-price" error={errors.basePrice?.message}>
+				<Field label="Price (Tk)" htmlFor="c-price" error={errors.basePrice?.message}>
 					<Input type="number" inputMode="decimal" step="0.01" {...describedBy("c-price", errors.basePrice?.message)} {...register("basePrice")} />
 				</Field>
 			</form>
@@ -100,7 +100,7 @@ export default function CategoriesPage() {
 			<PageHeader
 				eyebrow="Catalog"
 				title="Services"
-				description="What customers can book, and the base fee for each."
+				description="Services customers can book, with their prices."
 				actions={<Button icon={<Plus className="size-4" />} onClick={() => { setEditing(null); setOpen(true); }}>New service</Button>}
 			/>
 			{categories.isLoading ? (

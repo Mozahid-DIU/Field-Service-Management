@@ -50,7 +50,7 @@ export default function RegisterPage() {
 
 	const finish = (payload: AuthPayload) => {
 		authStore.signIn(payload.user, payload.accessToken);
-		toast.success("Account created — welcome to FixFlow!");
+		toast.success("Welcome to FixFlow!");
 		router.replace(homeFor(payload.user.role));
 	};
 
@@ -72,9 +72,8 @@ export default function RegisterPage() {
 
 	return (
 		<>
-			<p className="font-mono text-[11px] font-semibold tracking-[0.18em] text-signal-strong uppercase">Create account</p>
-			<h1 className="mt-2 font-display text-4xl font-bold tracking-tight">Get things fixed.</h1>
-			<p className="mt-2 text-ink-soft">Book a verified technician in under a minute.</p>
+			<h1 className="text-[28px] font-bold tracking-tight">Create your account</h1>
+			<p className="mt-1 text-ink-soft">It only takes a minute.</p>
 
 			<div className="mt-8">
 				<GoogleButton onSuccess={finish} />
@@ -85,7 +84,7 @@ export default function RegisterPage() {
 					<Field label="Email" htmlFor="email" error={errors.email?.message}>
 						<Input type="email" autoComplete="email" placeholder="you@example.com" {...describedBy("email", errors.email?.message)} {...register("email")} />
 					</Field>
-					<Field label="Phone" htmlFor="phone" optional error={errors.phone?.message} hint="Your technician calls this number on arrival.">
+					<Field label="Phone" htmlFor="phone" optional error={errors.phone?.message} hint="So your technician can call you.">
 						<Input type="tel" autoComplete="tel" inputMode="tel" placeholder="01712345678" {...describedBy("phone", errors.phone?.message)} {...register("phone")} />
 					</Field>
 					<Field label="Password" htmlFor="password" error={errors.password?.message}>
@@ -110,7 +109,7 @@ export default function RegisterPage() {
 
 			<p className="mt-8 text-center text-sm text-ink-soft">
 				Already have an account?{" "}
-				<Link href="/login" className="font-semibold text-ink underline decoration-signal decoration-2 underline-offset-4">
+				<Link href="/login" className="font-semibold text-signal-strong hover:underline">
 					Sign in
 				</Link>
 			</p>

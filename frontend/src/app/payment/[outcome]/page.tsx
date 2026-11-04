@@ -18,13 +18,13 @@ const OUTCOMES = {
 		icon: CheckCircle2,
 		tone: "completed",
 		title: "Payment received",
-		body: "bKash confirmed your payment and the invoice is settled. Thank you!",
+		body: "Thank you! Your payment was successful."
 	},
 	pending: {
 		icon: Clock,
 		tone: "pending",
-		title: "Confirming with bKash…",
-		body: "We couldn't confirm the payment yet. No need to pay again — check the status below.",
+		title: "Payment is being confirmed",
+		body: "We're still waiting for bKash to confirm. Please don't pay again. You can check the status below.",
 	},
 	cancelled: {
 		icon: XCircle,
@@ -35,8 +35,8 @@ const OUTCOMES = {
 	failed: {
 		icon: XCircle,
 		tone: "rejected",
-		title: "Payment didn't go through",
-		body: "bKash did not complete the payment. No money was taken — please try again.",
+		title: "Payment failed",
+		body: "The payment was not completed and no money was taken. Please try again.",
 	},
 } as const;
 

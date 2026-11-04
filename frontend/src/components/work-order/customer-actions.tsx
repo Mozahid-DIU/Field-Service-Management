@@ -29,23 +29,23 @@ export function PayWithBkash({ order }: { order: WorkOrderDetail }) {
 
 	if (!order.invoice) return null;
 	return (
-		<div className="overflow-hidden rounded-2xl bg-ink text-paper">
+		<div className="ticket overflow-hidden">
 			<div className="p-5">
-				<p className="font-mono text-[11px] tracking-[0.18em] text-signal uppercase">Amount due</p>
-				<p className="mt-1 font-display text-4xl font-bold tracking-tight">{taka(order.invoice.total)}</p>
-				<p className="mt-1 text-sm text-paper/60">Invoice {order.invoice.invoiceNo}</p>
+				<p className="text-sm text-ink-soft">Amount to pay</p>
+				<p className="mt-1 text-3xl font-bold">{taka(order.invoice.total)}</p>
+				<p className="mt-1 text-sm text-ink-faint">Bill no. {order.invoice.invoiceNo}</p>
 			</div>
-			<div className="border-t border-white/10 p-5">
+			<div className="border-t border-line bg-paper/60 p-5">
 				<Button
 					size="lg"
-					className="w-full bg-[#e2136e] shadow-[0_2px_0_#a50d50] hover:bg-[#c40f5f]"
+					className="w-full bg-[#e2136e] hover:bg-[#c40f5f]"
 					loading={pay.isPending || pay.isSuccess}
 					onClick={() => pay.mutate()}
 				>
 					Pay with bKash
 				</Button>
-				<p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-paper/60">
-					<ShieldCheck className="size-3.5" aria-hidden /> Verified with bKash before your invoice is marked paid
+				<p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-ink-faint">
+					<ShieldCheck className="size-3.5" aria-hidden /> Secure payment with bKash
 				</p>
 			</div>
 		</div>
@@ -82,7 +82,7 @@ export function CancelRequest({ order }: { order: WorkOrderDetail }) {
 					</>
 				}
 			>
-				<Field label="Reason" htmlFor="cancel-reason" hint="Helps us improve — at least 3 characters.">
+				<Field label="Reason" htmlFor="cancel-reason" hint="Please tell us why (at least 3 characters).">
 					<Textarea id="cancel-reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Fixed it myself" autoFocus />
 				</Field>
 			</Dialog>

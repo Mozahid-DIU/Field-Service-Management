@@ -30,10 +30,10 @@ const TAB_FOR: Record<WorkOrderStatus, string> = {
 
 function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: boolean }) {
 	return (
-		<div className={accent ? "rounded-2xl bg-ink p-5 text-paper shadow-lift" : "ticket p-5"}>
-			<p className={accent ? "text-xs font-semibold text-paper/60" : "text-xs font-semibold text-ink-faint"}>{label}</p>
-			<p className="mt-2 font-display text-3xl font-bold tracking-tight">{value}</p>
-			{sub && <p className={accent ? "mt-1 text-xs text-signal" : "mt-1 text-xs text-ink-soft"}>{sub}</p>}
+		<div className="ticket p-5">
+			<p className="text-sm text-ink-soft">{label}</p>
+			<p className={accent ? "mt-1 text-2xl font-bold text-signal-strong" : "mt-1 text-2xl font-bold"}>{value}</p>
+			{sub && <p className="mt-1 text-xs text-ink-faint">{sub}</p>}
 		</div>
 	);
 }
@@ -53,9 +53,9 @@ export default function AdminDashboard() {
 		<>
 			<PageHeader
 				eyebrow="Operations"
-				title="Dispatch dashboard"
-				description={s ? `Updated ${ago(s.generatedAt)} · cached for 60s` : "Loading the latest numbers…"}
-				actions={<ButtonLink href="/admin/work-orders?tab=review" variant="ink">Review queue</ButtonLink>}
+				title="Dashboard"
+				description="Here's how things are going today."
+				actions={<ButtonLink href="/admin/work-orders?tab=review">Review requests</ButtonLink>}
 			/>
 
 			<section className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4 stagger">
@@ -63,10 +63,10 @@ export default function AdminDashboard() {
 					[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-32" />)
 				) : (
 					<>
-						<Kpi accent label="Collected via bKash" value={taka(s.revenue.totalCollected)} sub={`${taka(s.revenue.last30Days)} in the last 30 days`} />
+						<Kpi accent label="Payments received" value={taka(s.revenue.totalCollected)} sub={`${taka(s.revenue.last30Days)} in the last 30 days`} />
 						<Kpi label="Outstanding" value={taka(s.revenue.outstanding)} sub={`${s.revenue.unpaidInvoices} unpaid invoice(s)`} />
-						<Kpi label="Jobs in the field" value={String(active)} sub={`${byStatus.EN_ROUTE ?? 0} on the way · ${byStatus.IN_PROGRESS ?? 0} working`} />
-						<Kpi label="Awaiting action" value={String((byStatus.PENDING ?? 0) + (byStatus.APPROVED ?? 0))} sub={`${byStatus.PENDING ?? 0} to review · ${toSchedule.data?.meta.total ?? byStatus.APPROVED ?? 0} to schedule`} />
+						<Kpi label="Jobs in progress" value={String(active)} sub={`${byStatus.EN_ROUTE ?? 0} on the way · ${byStatus.IN_PROGRESS ?? 0} working`} />
+						<Kpi label="Needs your action" value={String((byStatus.PENDING ?? 0) + (byStatus.APPROVED ?? 0))} sub={`${byStatus.PENDING ?? 0} to review · ${toSchedule.data?.meta.total ?? byStatus.APPROVED ?? 0} to schedule`} />
 					</>
 				)}
 			</section>
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
 			{/* Pipeline: one segmented bar = the whole operation at a glance */}
 			<section className="ticket mb-8 p-5 sm:p-6">
 				<div className="mb-4 flex items-baseline justify-between">
-					<h2 className="font-display text-xl font-bold">Pipeline</h2>
+					<h2 className="text-lg font-bold">Work orders by status</h2>
 					<span className="font-mono text-sm text-ink-soft">{s?.workOrders.total ?? "—"} total</span>
 				</div>
 				{s ? (
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
 					{queue.isLoading ? (
 						<Skeleton className="h-48" />
 					) : queue.data?.data.length === 0 ? (
-						<EmptyState title="Inbox zero" description="Every request has been reviewed." className="py-8" />
+						<EmptyState title="All caught up" description="No new requests to review." className="py-8" />
 					) : (
 						<ul className="divide-y divide-line">
 							{queue.data?.data.map((o) => (
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
 										<div className="min-w-0 flex-1">
 											<p className="truncate font-semibold group-hover:text-signal-strong">{o.title}</p>
 											<p className="truncate text-xs text-ink-soft">
-												<span className="font-mono">{o.code}</span> · {o.category.name} · {o.customer.name} · {ago(o.createdAt)}
+												#{o.code.slice(-6)} · {o.category.name} · {o.customer.name} · {ago(o.createdAt)}
 											</p>
 										</div>
 										<PriorityTag priority={o.priority} />
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
 											<span className="font-mono font-semibold">{c.count}</span>
 										</div>
 										<div className="h-2 rounded-full bg-paper-sunken">
-											<div className="h-full rounded-full bg-ink transition-[width] duration-700" style={{ width: `${(c.count / maxCategory) * 100}%` }} />
+											<div className="h-full rounded-full bg-signal transition-[width] duration-700" style={{ width: `${(c.count / maxCategory) * 100}%` }} />
 										</div>
 									</li>
 								))}

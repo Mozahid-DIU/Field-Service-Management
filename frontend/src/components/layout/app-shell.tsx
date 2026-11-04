@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/brand";
 import { Avatar } from "@/components/ui/avatar";
-import { RoleTag } from "@/components/ui/badges";
 import { homeFor, useAuth } from "@/lib/auth-store";
 import { cn } from "@/lib/format";
 import { useLogout } from "@/lib/use-logout";
@@ -22,10 +21,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 	const mobileItems = items.filter((item) => item.primary).slice(0, 4);
 
 	return (
-		<div className="min-h-dvh lg:grid lg:grid-cols-[260px_1fr]">
+		<div className="min-h-dvh lg:grid lg:grid-cols-[256px_1fr]">
 			{/* Desktop sidebar */}
-			<aside className="sticky top-0 hidden h-dvh flex-col border-r border-line bg-card/80 backdrop-blur lg:flex">
-				<div className="px-6 pt-6 pb-8">
+			<aside className="sticky top-0 hidden h-dvh flex-col border-r border-line bg-card lg:flex">
+				<div className="px-5 pt-6 pb-6">
 					<Logo href={homeFor(user.role)} />
 				</div>
 				<nav aria-label="Main" className="flex flex-1 flex-col gap-1 px-3">
@@ -37,28 +36,27 @@ export function AppShell({ children }: { children: ReactNode }) {
 								href={item.href}
 								aria-current={active ? "page" : undefined}
 								className={cn(
-									"group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors",
-									active ? "bg-ink text-paper" : "text-ink-soft hover:bg-paper-sunken hover:text-ink",
+									"flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors",
+									active ? "bg-signal-wash text-signal-strong" : "text-ink-soft hover:bg-paper hover:text-ink",
 								)}
 							>
-								<item.icon className={cn("size-[18px]", active && "text-signal")} aria-hidden />
+								<item.icon className="size-5" aria-hidden />
 								{item.label}
-								{active && <span className="absolute top-1/2 right-3 size-1.5 -translate-y-1/2 rounded-full bg-signal" />}
 							</Link>
 						);
 					})}
 				</nav>
-				<div className="m-3 rounded-2xl border border-line bg-paper p-3">
+				<div className="border-t border-line p-4">
 					<div className="flex items-center gap-3">
 						<Avatar name={user.name} src={user.avatarUrl} />
 						<div className="min-w-0 flex-1">
 							<p className="truncate text-sm font-semibold">{user.name}</p>
-							<RoleTag role={user.role} />
+							<p className="truncate text-xs text-ink-faint">{user.email}</p>
 						</div>
 						<button
 							type="button"
 							onClick={logout}
-							className="grid size-9 cursor-pointer place-items-center rounded-lg text-ink-soft hover:bg-card hover:text-[var(--st-rejected)]"
+							className="grid size-9 cursor-pointer place-items-center rounded-lg text-ink-faint hover:bg-paper hover:text-ink"
 							aria-label="Sign out"
 							title="Sign out"
 						>
@@ -69,16 +67,16 @@ export function AppShell({ children }: { children: ReactNode }) {
 			</aside>
 
 			{/* Mobile top bar */}
-			<header className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-paper/90 px-4 py-3 backdrop-blur lg:hidden">
+			<header className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-card px-4 py-3 lg:hidden">
 				<Logo href={homeFor(user.role)} />
-				<div className="flex items-center gap-2">
-					<Link href="/profile" aria-label="Profile">
+				<div className="flex items-center gap-1">
+					<Link href="/profile" aria-label="Profile" className="p-1">
 						<Avatar name={user.name} src={user.avatarUrl} size={32} />
 					</Link>
 					<button
 						type="button"
 						onClick={logout}
-						className="grid size-9 cursor-pointer place-items-center rounded-lg text-ink-soft hover:bg-card"
+						className="grid size-9 cursor-pointer place-items-center rounded-lg text-ink-faint hover:bg-paper"
 						aria-label="Sign out"
 					>
 						<LogOut className="size-4" />
@@ -86,14 +84,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 				</div>
 			</header>
 
-			<main className="min-w-0 px-4 pt-6 pb-28 sm:px-8 lg:px-12 lg:pt-10 lg:pb-16">
+			<main className="min-w-0 px-4 pt-6 pb-28 sm:px-8 lg:px-10 lg:pt-8 lg:pb-12">
 				<div className="mx-auto max-w-6xl">{children}</div>
 			</main>
 
-			{/* Mobile bottom tab bar — thumb reach for technicians in the field */}
+			{/* Mobile bottom tab bar */}
 			<nav
 				aria-label="Main"
-				className="fixed inset-x-3 bottom-3 z-30 grid rounded-2xl border border-line bg-card/95 p-1.5 shadow-lift backdrop-blur lg:hidden"
+				className="fixed inset-x-0 bottom-0 z-30 grid border-t border-line bg-card pb-[env(safe-area-inset-bottom)] lg:hidden"
 				style={{ gridTemplateColumns: `repeat(${mobileItems.length}, minmax(0, 1fr))` }}
 			>
 				{mobileItems.map((item) => {
@@ -104,11 +102,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 							href={item.href}
 							aria-current={active ? "page" : undefined}
 							className={cn(
-								"flex flex-col items-center gap-1 rounded-xl py-2 text-[11px] font-semibold",
-								active ? "bg-ink text-paper" : "text-ink-soft",
+								"flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold",
+								active ? "text-signal-strong" : "text-ink-faint",
 							)}
 						>
-							<item.icon className={cn("size-5", active && "text-signal")} aria-hidden />
+							<item.icon className="size-5" aria-hidden />
 							{item.label}
 						</Link>
 					);
@@ -119,26 +117,21 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 export function PageHeader({
-	eyebrow,
 	title,
 	description,
 	actions,
 }: {
+	/** kept for call-site compatibility; not shown */
 	eyebrow?: string;
 	title: ReactNode;
 	description?: ReactNode;
 	actions?: ReactNode;
 }) {
 	return (
-		<header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between animate-rise">
+		<header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 			<div>
-				{eyebrow && (
-					<p className="mb-2 font-mono text-[11px] font-semibold tracking-[0.18em] text-signal-strong uppercase">
-						{eyebrow}
-					</p>
-				)}
-				<h1 className="font-display text-3xl leading-[1.05] font-bold tracking-tight sm:text-4xl">{title}</h1>
-				{description && <p className="mt-2 max-w-xl text-ink-soft">{description}</p>}
+				<h1 className="text-2xl font-bold tracking-tight sm:text-[28px]">{title}</h1>
+				{description && <p className="mt-1 text-ink-soft">{description}</p>}
 			</div>
 			{actions && <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>}
 		</header>

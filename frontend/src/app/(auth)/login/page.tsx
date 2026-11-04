@@ -56,9 +56,8 @@ function LoginForm() {
 
 	return (
 		<>
-			<p className="font-mono text-[11px] font-semibold tracking-[0.18em] text-signal-strong uppercase">Sign in</p>
-			<h1 className="mt-2 font-display text-4xl font-bold tracking-tight">Good to see you.</h1>
-			<p className="mt-2 text-ink-soft">Track repairs, manage jobs and settle invoices in one place.</p>
+			<h1 className="text-[28px] font-bold tracking-tight">Welcome back</h1>
+			<p className="mt-1 text-ink-soft">Sign in to your FixFlow account.</p>
 
 			<div className="mt-8">
 				<GoogleButton onSuccess={finish} />
@@ -97,8 +96,8 @@ function LoginForm() {
 				</form>
 			</div>
 
-			<div className="mt-8 rounded-2xl border border-dashed border-line-strong bg-card/70 p-4">
-				<p className="text-xs font-semibold text-ink-soft">Demo accounts — tap to fill</p>
+			<div className="mt-8 rounded-2xl bg-paper p-4">
+				<p className="text-sm font-semibold text-ink-soft">Try a demo account</p>
 				<div className="mt-3 grid grid-cols-3 gap-2">
 					{DEMO.map((demo) => (
 						<button
@@ -108,7 +107,7 @@ function LoginForm() {
 								setValue("email", demo.email, { shouldValidate: true });
 								setValue("password", demo.password, { shouldValidate: true });
 							}}
-							className="flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-line bg-card px-2 py-3 text-xs font-semibold transition hover:-translate-y-0.5 hover:border-ink hover:shadow-ticket"
+							className="flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-line bg-card px-2 py-3 text-sm font-medium transition hover:border-signal hover:text-signal-strong"
 						>
 							<demo.icon className="size-4 text-signal" aria-hidden />
 							{demo.label}
@@ -119,7 +118,7 @@ function LoginForm() {
 
 			<p className="mt-8 text-center text-sm text-ink-soft">
 				New to FixFlow?{" "}
-				<Link href="/register" className="font-semibold text-ink underline decoration-signal decoration-2 underline-offset-4">
+				<Link href="/register" className="font-semibold text-signal-strong hover:underline">
 					Create an account
 				</Link>
 			</p>

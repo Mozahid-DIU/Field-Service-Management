@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/layout/app-shell";
 import { StatusPill } from "@/components/ui/badges";
 import { EmptyState, Skeleton, TicketSkeleton } from "@/components/ui/states";
 import { useAuth } from "@/lib/auth-store";
+import { CategoryIcon } from "@/lib/category-icon";
 import { cn, rating, taka, timeRange } from "@/lib/format";
 import { useMyJobs, useTechnicianStats } from "@/lib/queries";
 import type { WorkOrder } from "@/lib/types";
@@ -23,12 +24,12 @@ function JobCard({ job, highlight }: { job: WorkOrder; highlight?: boolean }) {
 			className={cn("ticket group flex flex-col gap-3 p-5 transition hover:-translate-y-0.5 hover:shadow-lift", highlight && "ring-2 ring-signal")}
 		>
 			<div className="flex items-center justify-between gap-3">
-				<span className="font-mono text-xs font-semibold text-ink-soft">{job.code}</span>
+				<span className="flex items-center gap-2 text-sm text-ink-soft"><CategoryIcon name={job.category.name} size="sm" />{job.category.name}</span>
 				<StatusPill status={job.status} />
 			</div>
 			<div>
 				<p className="font-display text-xl leading-tight font-semibold">{job.title}</p>
-				<p className="text-sm text-ink-soft">{job.category.name}</p>
+				<p className="text-sm text-ink-faint">#{job.code.slice(-6)}</p>
 			</div>
 			<div className="flex flex-col gap-1.5 text-sm">
 				<span className="flex items-center gap-2 font-semibold">
@@ -72,8 +73,8 @@ export default function TechnicianToday() {
 		<>
 			<PageHeader
 				eyebrow={new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}
-				title={<>Ready to roll, {user?.name.split(" ")[0]}?</>}
-				description="Your route for today. Tap a job to update its status."
+				title={<>Hi, {user?.name.split(" ")[0]}</>}
+				description="Here are your jobs for today."
 			/>
 
 			<section className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4 stagger">
@@ -113,7 +114,7 @@ export default function TechnicianToday() {
 				{today.isLoading ? (
 					<TicketSkeleton rows={2} />
 				) : todays.length === 0 ? (
-					<EmptyState title="No more visits today" description="Enjoy the breather — new bookings show up here instantly." />
+					<EmptyState title="No more visits today" description="New bookings will show up here." />
 				) : (
 					<div className="grid gap-3 md:grid-cols-2 stagger">
 						{todays.map((job) => (

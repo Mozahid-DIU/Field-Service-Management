@@ -1,46 +1,44 @@
 @import "tailwindcss";
 
-/* ──────────────────────────────────────────────────────────────
-   FixFlow "Field Ops" design tokens
-   Warm paper field · ink type · one signal colour (safety orange)
-   Status colours are semantic only — never decorative.
-   ────────────────────────────────────────────────────────────── */
+/* FixFlow — friendly, clean app theme.
+   Light grey page, white cards, one teal brand colour.
+   Status colours are only used for status. */
 :root {
-	--paper: #f3f0e8;
-	--paper-sunken: #e9e5d9;
-	--card: #fffdf8;
-	--ink: #17160f;
-	--ink-soft: #4a4740;
-	--ink-faint: #8a867b;
-	--line: #dcd6c8;
-	--line-strong: #c4bdac;
+	--paper: #f5f7f8;
+	--paper-sunken: #eef1f3;
+	--card: #ffffff;
+	--ink: #1d2733;
+	--ink-soft: #55606d;
+	--ink-faint: #8c96a1;
+	--line: #e4e8ec;
+	--line-strong: #d2d8de;
 
-	--signal: #ff5b1f;
-	--signal-strong: #d9430c;
-	--signal-wash: #ffe8dc;
+	--signal: #0f9d7a;
+	--signal-strong: #0b7d61;
+	--signal-wash: #e5f5f0;
 
-	--st-pending: #a87300;
-	--st-pending-bg: #fff2cc;
-	--st-approved: #2155d0;
-	--st-approved-bg: #e3ebff;
-	--st-assigned: #6a3fd1;
-	--st-assigned-bg: #eee6ff;
-	--st-enroute: #0b7486;
-	--st-enroute-bg: #d9f2f5;
-	--st-progress: #d9430c;
-	--st-progress-bg: #ffe8dc;
-	--st-completed: #1c7f47;
-	--st-completed-bg: #dcf3e5;
-	--st-paid: #0e4d2f;
-	--st-paid-bg: #c9e9d6;
-	--st-rejected: #b42d23;
-	--st-rejected-bg: #fde3e0;
-	--st-cancelled: #6b675e;
-	--st-cancelled-bg: #e7e3da;
+	--st-pending: #b26a00;
+	--st-pending-bg: #fff4e0;
+	--st-approved: #2563eb;
+	--st-approved-bg: #e8effe;
+	--st-assigned: #7c3aed;
+	--st-assigned-bg: #f1eafe;
+	--st-enroute: #0e7490;
+	--st-enroute-bg: #e0f4f8;
+	--st-progress: #c2410c;
+	--st-progress-bg: #fff0e6;
+	--st-completed: #0b7d61;
+	--st-completed-bg: #e5f5f0;
+	--st-paid: #15803d;
+	--st-paid-bg: #e6f6ea;
+	--st-rejected: #c62828;
+	--st-rejected-bg: #fdecec;
+	--st-cancelled: #64748b;
+	--st-cancelled-bg: #f0f2f5;
 
-	--shadow-ticket: 0 1px 0 rgba(23, 22, 15, 0.06), 0 8px 24px -12px rgba(23, 22, 15, 0.18);
-	--shadow-lift: 0 2px 0 rgba(23, 22, 15, 0.08), 0 18px 40px -16px rgba(23, 22, 15, 0.28);
-	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--shadow-ticket: 0 1px 2px rgba(16, 24, 40, 0.05);
+	--shadow-lift: 0 8px 24px -8px rgba(16, 24, 40, 0.14);
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
@@ -56,21 +54,22 @@
 	--color-signal-strong: var(--signal-strong);
 	--color-signal-wash: var(--signal-wash);
 
-	--font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-	--font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-	--font-mono: var(--font-jetbrains), ui-monospace, monospace;
+	/* One friendly typeface everywhere */
+	--font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+	--font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+	--font-mono: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 
 	--shadow-ticket: var(--shadow-ticket);
 	--shadow-lift: var(--shadow-lift);
 
-	--animate-rise: rise 0.6s var(--ease-out-expo) both;
-	--animate-fade: fade 0.4s ease-out both;
+	--animate-rise: rise 0.35s var(--ease-out) both;
+	--animate-fade: fade 0.25s ease-out both;
 }
 
 @keyframes rise {
 	from {
 		opacity: 0;
-		transform: translateY(14px);
+		transform: translateY(6px);
 	}
 	to {
 		opacity: 1;
@@ -90,10 +89,10 @@
 @keyframes pulse-dot {
 	0%,
 	100% {
-		box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 45%, transparent);
+		opacity: 1;
 	}
 	50% {
-		box-shadow: 0 0 0 6px transparent;
+		opacity: 0.35;
 	}
 }
 
@@ -105,53 +104,38 @@ html {
 
 body {
 	font-family: var(--font-sans);
-	background-color: var(--paper);
-	/* Faint blueprint dot grid — atmosphere without noise */
-	background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1px);
-	background-size: 22px 22px;
+	background: var(--paper);
 	min-height: 100dvh;
-}
-
-::selection {
-	background: var(--signal);
-	color: white;
+	font-variant-numeric: tabular-nums;
 }
 
 :focus-visible {
 	outline: 2px solid var(--signal);
 	outline-offset: 2px;
-	border-radius: 6px;
+	border-radius: 8px;
 }
 
-/* Ticket: the core surface. A perforated notch line separates the stub. */
+/* Card: the basic surface */
 .ticket {
 	background: var(--card);
 	border: 1px solid var(--line);
-	border-radius: 14px;
+	border-radius: 16px;
 	box-shadow: var(--shadow-ticket);
 }
 
+/* Kept as a plain divider for older markup */
 .perforation {
-	background-image: radial-gradient(circle, var(--paper) 4px, transparent 4.5px);
-	background-size: 14px 14px;
-	background-position: center;
-	background-repeat: repeat-x;
-	height: 10px;
+	height: 1px;
+	background: var(--line);
 }
 
 .live-dot {
-	animation: pulse-dot 1.8s ease-in-out infinite;
+	animation: pulse-dot 1.6s ease-in-out infinite;
 }
 
 .stagger > * {
-	animation: rise 0.6s var(--ease-out-expo) both;
+	animation: rise 0.35s var(--ease-out) both;
 }
-.stagger > *:nth-child(2) { animation-delay: 60ms; }
-.stagger > *:nth-child(3) { animation-delay: 120ms; }
-.stagger > *:nth-child(4) { animation-delay: 180ms; }
-.stagger > *:nth-child(5) { animation-delay: 240ms; }
-.stagger > *:nth-child(6) { animation-delay: 300ms; }
-.stagger > *:nth-child(n + 7) { animation-delay: 340ms; }
 
 @media (prefers-reduced-motion: reduce) {
 	*,

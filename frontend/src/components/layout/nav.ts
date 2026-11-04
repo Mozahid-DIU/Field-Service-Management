@@ -43,7 +43,7 @@ export const NAV: Record<Role, NavItem[]> = {
 		{ href: "/admin/technicians", label: "Technicians", icon: Wrench, primary: true },
 		{ href: "/admin/users", label: "Users", icon: Users, primary: true },
 		{ href: "/admin/categories", label: "Services", icon: ScrollText },
-		{ href: "/admin/audit-logs", label: "Audit log", icon: History },
+		{ href: "/admin/audit-logs", label: "Activity log", icon: History },
 		{ href: "/profile", label: "Profile", icon: UserCircle },
 	],
 };

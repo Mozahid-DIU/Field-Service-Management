@@ -59,7 +59,7 @@ export default function AuditLogsPage() {
 
 	return (
 		<>
-			<PageHeader eyebrow="Compliance" title="Audit log" description="Who changed what, and when. Written in the same transaction as every critical change." />
+			<PageHeader eyebrow="Compliance" title="Activity log" description="See who changed what, and when." />
 
 			<div className="mb-5 flex flex-col gap-2 sm:flex-row">
 				<Select value={entity} onChange={(e) => { setEntity(e.target.value); setPage(1); }} className="sm:w-56" aria-label="Entity">

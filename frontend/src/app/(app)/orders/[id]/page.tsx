@@ -22,7 +22,7 @@ function Section({ title, children, aside }: { title: string; children: React.Re
 	return (
 		<section className="ticket p-5 sm:p-6">
 			<div className="mb-4 flex items-center justify-between">
-				<h2 className="font-mono text-[11px] font-semibold tracking-[0.16em] text-ink-faint uppercase">{title}</h2>
+				<h2 className="text-base font-semibold text-ink">{title}</h2>
 				{aside}
 			</div>
 			{children}
@@ -111,10 +111,10 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 				</Link>
 				<div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
 					<div>
-						<p className="font-mono text-xs font-semibold tracking-wider text-signal-strong">
-							{order.code} · {order.category.name}
+						<p className="text-sm text-ink-faint">
+							{order.category.name} · #{order.code.slice(-6)}
 						</p>
-						<h1 className="mt-1 font-display text-3xl leading-tight font-bold tracking-tight sm:text-4xl">{order.title}</h1>
+						<h1 className="mt-1 text-2xl leading-tight font-bold tracking-tight sm:text-3xl">{order.title}</h1>
 						<div className="mt-3 flex flex-wrap items-center gap-3">
 							<StatusPill status={order.status} />
 							<PriorityTag priority={order.priority} />
@@ -132,7 +132,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 
 			<div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
 				<div className="flex flex-col gap-6">
-					<Section title="Job details">
+					<Section title="Details">
 						<p className="leading-relaxed whitespace-pre-line">{order.description}</p>
 						<dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
 							<div className="flex gap-2">
@@ -154,7 +154,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 						</dl>
 						{(order.adminNote || order.cancelReason) && (
 							<p className="mt-5 rounded-xl bg-paper p-3 text-sm">
-								<span className="font-semibold">{order.cancelReason ? "Cancellation reason: " : "Note from FixFlow: "}</span>
+								<span className="font-semibold">{order.cancelReason ? "Reason for cancelling: " : "Note from FixFlow: "}</span>
 								{order.cancelReason ?? order.adminNote}
 							</p>
 						)}
@@ -205,8 +205,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 
 					{order.invoice && (
 						<Section title="Invoice" aside={<MoneyStatus status={order.invoice.status} />}>
-							<div className="perforation -mx-6 mb-4" aria-hidden />
-							<dl className="grid grid-cols-2 gap-y-2 font-mono text-sm">
+														<dl className="grid grid-cols-2 gap-y-2 font-mono text-sm">
 								<dt className="font-sans text-ink-soft">Invoice no.</dt>
 								<dd className="text-right">{order.invoice.invoiceNo}</dd>
 								<dt className="font-sans text-ink-soft">Service fee</dt>
@@ -242,7 +241,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
 						</Section>
 					)}
 
-					<Section title="Activity">
+					<Section title="History">
 						<Timeline orderId={order.id} />
 					</Section>
 				</div>

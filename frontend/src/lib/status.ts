@@ -11,12 +11,12 @@ export const STATUS_META: Record<WorkOrderStatus, StatusMeta> = {
 	PENDING: {
 		label: "Pending review",
 		tone: "pending",
-		customerHint: "We received your request. A manager will review it shortly.",
+		customerHint: "We got your request and will review it soon.",
 	},
 	APPROVED: {
 		label: "Approved",
 		tone: "approved",
-		customerHint: "Approved! We're matching you with the right technician.",
+		customerHint: "Your request is approved. We're finding a technician for you.",
 	},
 	REJECTED: {
 		label: "Rejected",
@@ -41,12 +41,12 @@ export const STATUS_META: Record<WorkOrderStatus, StatusMeta> = {
 	COMPLETED: {
 		label: "Payment due",
 		tone: "completed",
-		customerHint: "Work completed. Please review the invoice and pay with bKash.",
+		customerHint: "The work is done. Please check the bill and pay with bKash.",
 	},
 	PAID: {
 		label: "Paid",
 		tone: "paid",
-		customerHint: "All done and paid. Thank you!",
+		customerHint: "All done. Thank you for using FixFlow!",
 	},
 	CANCELLED: {
 		label: "Cancelled",
@@ -79,9 +79,9 @@ export const ACTIVE_STATUSES: WorkOrderStatus[] = [
 
 export const PRIORITY_META: Record<Priority, { label: string; className: string }> = {
 	LOW: { label: "Low", className: "text-ink-faint" },
-	MEDIUM: { label: "Medium", className: "text-ink-soft" },
+	MEDIUM: { label: "Normal", className: "text-ink-soft" },
 	HIGH: { label: "High", className: "text-[var(--st-progress)]" },
-	URGENT: { label: "Urgent", className: "text-[var(--st-rejected)] font-semibold" },
+	URGENT: { label: "Urgent", className: "text-[var(--st-rejected)]" },
 };
 
 export const CANCELLABLE: WorkOrderStatus[] = ["PENDING", "APPROVED", "ASSIGNED"];

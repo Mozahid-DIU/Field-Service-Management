@@ -18,7 +18,7 @@ export default function PaymentsPage() {
 
 	return (
 		<>
-			<PageHeader eyebrow="Payments" title="bKash payments" description="Every payment attempt, verified directly with bKash." />
+			<PageHeader eyebrow="Payments" title="Payments" description="Your bKash payment history." />
 
 			{isLoading ? (
 				<Skeleton className="h-72" />

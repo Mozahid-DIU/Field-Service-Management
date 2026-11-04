@@ -65,7 +65,7 @@ export function OrderList({
 							onClick={() => setState({ tab: t.key })}
 							className={cn(
 								"shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition-colors",
-								t.key === tab.key ? "bg-ink text-paper" : "bg-card text-ink-soft ring-1 ring-line hover:text-ink",
+								t.key === tab.key ? "bg-signal text-white" : "bg-card text-ink-soft ring-1 ring-line hover:text-ink",
 							)}
 						>
 							{t.label}
