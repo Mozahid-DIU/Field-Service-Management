@@ -3,6 +3,7 @@ import type { AuthUser } from "../../types/express";
 import { AppError } from "../../utils/AppError";
 import { AuditAction, recordAudit } from "../../utils/auditLog";
 import { loadAccessibleOrder } from "../workOrder/workOrder.access";
+import { lockTechnician } from "../workOrder/workOrder.scheduling";
 import type { CreateFeedbackInput } from "./feedback.validation";
 
 /** Customer rates a PAID job once; technician's average is recomputed atomically. */
@@ -21,6 +22,8 @@ async function create(
 	const technicianId = order.technicianId;
 
 	return prisma.$transaction(async (tx) => {
+		// Serialize rating recomputation per technician (no lost updates)
+		await lockTechnician(tx, technicianId);
 		const existing = await tx.feedback.findUnique({
 			where: { workOrderId },
 			select: { id: true },

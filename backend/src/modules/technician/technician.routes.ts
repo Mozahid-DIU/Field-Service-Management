@@ -32,6 +32,7 @@ router.get(
 );
 router.get(
 	"/:id/feedback",
+	auth(),
 	validate({
 		params: technicianIdParamSchema,
 		query: technicianFeedbackQuerySchema,

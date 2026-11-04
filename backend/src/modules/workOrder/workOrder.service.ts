@@ -146,9 +146,18 @@ async function update(id: string, input: UpdateWorkOrderInput, user: AuthUser) {
 	if (input.categoryId) await assertActiveCategory(input.categoryId);
 
 	return prisma.$transaction(async (tx) => {
-		const updated = await tx.workOrder.update({
-			where: { id },
+		// Status guard in the WHERE clause: an admin approving at the same moment wins
+		const guarded = await tx.workOrder.updateMany({
+			where: { id, status: "PENDING", deletedAt: null },
 			data: input,
+		});
+		if (guarded.count === 0) {
+			throw AppError.conflict(
+				"Work order is no longer PENDING and can't be edited",
+			);
+		}
+		const updated = await tx.workOrder.findUniqueOrThrow({
+			where: { id },
 			include: workOrderListInclude,
 		});
 		await recordAudit(

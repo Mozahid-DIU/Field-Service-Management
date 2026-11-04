@@ -20,6 +20,9 @@ import type {
 
 type Tx = Prisma.TransactionClient;
 
+/** Invoice columns are Decimal(10,2); keep headroom for the service fee. */
+const MAX_PARTS_COST = 9_000_000;
+
 interface TransitionOptions {
 	data?: Prisma.WorkOrderUncheckedUpdateManyInput;
 	actorId: string | null;
@@ -238,6 +241,11 @@ async function submitReport(
 	technician: AuthUser,
 ) {
 	const partsCost = sumPartsCost(input.partsUsed);
+	if (partsCost.greaterThan(MAX_PARTS_COST)) {
+		throw AppError.badRequest("Total parts cost is too large", [
+			{ path: "partsUsed", message: `Must not exceed ${MAX_PARTS_COST}` },
+		]);
+	}
 
 	await prisma.$transaction(async (tx) => {
 		const order = await lockAndLoad(tx, id, technician);

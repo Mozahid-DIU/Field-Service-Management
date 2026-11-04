@@ -108,6 +108,34 @@ async function login(input: LoginInput): Promise<AuthResult> {
 	return issueTokens(user);
 }
 
+/**
+ * Registration does not verify email ownership, so a password set on this
+ * email may belong to someone else (account pre-hijacking). Google has just
+ * proven ownership: drop that password and every existing session.
+ */
+async function linkGoogleAccount(
+	existing: User,
+	googleId: string,
+	picture: string | undefined,
+): Promise<User> {
+	return prisma.$transaction(async (tx) => {
+		const linked = await tx.user.update({
+			where: { id: existing.id },
+			data: {
+				googleId,
+				password: null,
+				provider: "GOOGLE",
+				avatarUrl: existing.avatarUrl ?? picture,
+			},
+		});
+		await tx.refreshToken.updateMany({
+			where: { userId: existing.id, revokedAt: null },
+			data: { revokedAt: new Date() },
+		});
+		return linked;
+	});
+}
+
 async function loginWithGoogle(idToken: string): Promise<AuthResult> {
 	if (!env.GOOGLE_CLIENT_ID) {
 		throw new AppError(
@@ -136,13 +164,7 @@ async function loginWithGoogle(idToken: string): Promise<AuthResult> {
 		assertCanLogin(existing);
 		user = existing.googleId
 			? existing
-			: await prisma.user.update({
-					where: { id: existing.id },
-					data: {
-						googleId: payload.sub,
-						avatarUrl: existing.avatarUrl ?? payload.picture,
-					},
-				});
+			: await linkGoogleAccount(existing, payload.sub, payload.picture);
 	} else {
 		user = await prisma.user.create({
 			data: {
