@@ -40,9 +40,16 @@ function fromPrisma(
 				message: "Related record does not exist",
 				errors: [],
 			};
-		default:
+		case "P2028":
 			return {
-				statusCode: StatusCodes.BAD_REQUEST,
+				statusCode: StatusCodes.SERVICE_UNAVAILABLE,
+				message: "The database is busy, please retry",
+				errors: [],
+			};
+		default:
+			// Unexpected DB error: 500 so it is logged, without leaking details
+			return {
+				statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
 				message: "Database request failed",
 				errors: [],
 			};

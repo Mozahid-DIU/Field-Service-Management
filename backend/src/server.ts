@@ -11,6 +11,15 @@ async function bootstrap(): Promise<void> {
 	server = app.listen(env.PORT, () => {
 		logger.info(`FixFlow API listening on port ${env.PORT} (${env.NODE_ENV})`);
 	});
+	server.on("error", (error: NodeJS.ErrnoException) => {
+		logger.error(
+			error.code === "EADDRINUSE"
+				? `Port ${env.PORT} is already in use — stop the other server first`
+				: "HTTP server error",
+			error,
+		);
+		process.exit(1);
+	});
 }
 
 async function shutdown(signal: string): Promise<void> {
