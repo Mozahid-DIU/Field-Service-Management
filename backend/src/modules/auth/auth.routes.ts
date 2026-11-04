@@ -33,7 +33,8 @@ router.post(
 );
 router.post(
 	"/refresh-token",
-	authLimiter,
+	// Called on every page load to restore the session; covered by the global
+	// API limiter. Tokens are 96 random hex chars, so brute force is not a concern.
 	validate({ body: refreshTokenSchema }),
 	authController.refreshToken,
 );
