@@ -12,7 +12,7 @@ import { GoogleButton } from "@/components/auth/google-button";
 import { Button } from "@/components/ui/button";
 import { describedBy, Field, Input } from "@/components/ui/field";
 import { api, errorMessage } from "@/lib/api";
-import { authStore, homeFor } from "@/lib/auth-store";
+import { authStore, homeFor, safeNext } from "@/lib/auth-store";
 import type { ApiSuccess, AuthPayload } from "@/lib/types";
 
 const schema = z.object({
@@ -41,8 +41,7 @@ function LoginForm() {
 	const finish = (payload: AuthPayload) => {
 		authStore.signIn(payload.user, payload.accessToken);
 		toast.success(`Welcome back, ${payload.user.name.split(" ")[0]}`);
-		const safeNext = next?.startsWith("/") && !next.startsWith("//") ? next : null;
-		router.replace(safeNext ?? homeFor(payload.user.role));
+		router.replace(safeNext(next) ?? homeFor(payload.user.role));
 	};
 
 	const onSubmit = handleSubmit(async (values) => {

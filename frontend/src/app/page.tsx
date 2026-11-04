@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowRight, BadgeCheck, CalendarCheck, Check, ClipboardList, CreditCard, MapPin, ShieldCheck, Star, Truck, Wallet } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarCheck, ClipboardList, CreditCard, MapPin, ShieldCheck, Star, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/brand";
-import { Avatar } from "@/components/ui/avatar";
+import { QuickBook } from "@/components/landing/quick-book";
 import { ButtonLink } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/states";
 import { homeFor, useAuth } from "@/lib/auth-store";
@@ -57,52 +57,6 @@ function Nav() {
 	);
 }
 
-function BookingPreview() {
-	const steps = [
-		{ label: "Request received", done: true },
-		{ label: "Technician assigned", done: true },
-		{ label: "On the way", current: true },
-		{ label: "Work done & payment", done: false },
-	];
-	return (
-		<div className="mx-auto w-full max-w-sm rounded-3xl bg-card p-6 text-ink shadow-2xl shadow-black/30">
-			<div className="flex items-center gap-3">
-				<CategoryIcon name="AC Repair" />
-				<div>
-					<p className="font-semibold">AC Repair</p>
-					<p className="text-sm text-ink-soft">Today, 3:00 PM - 5:00 PM</p>
-				</div>
-			</div>
-			<ol className="mt-6 flex flex-col gap-4">
-				{steps.map((step) => (
-					<li key={step.label} className="flex items-center gap-3 text-sm">
-						<span
-							className={
-								step.done
-									? "grid size-6 place-items-center rounded-full bg-signal text-white"
-									: step.current
-										? "grid size-6 place-items-center rounded-full border-2 border-signal bg-signal-wash"
-										: "size-6 rounded-full border-2 border-line"
-							}
-						>
-							{step.done && <Check className="size-3.5" strokeWidth={3} />}
-							{step.current && <span className="size-2 rounded-full bg-signal live-dot" />}
-						</span>
-						<span className={step.current ? "font-semibold text-ink" : step.done ? "text-ink-soft" : "text-ink-faint"}>{step.label}</span>
-					</li>
-				))}
-			</ol>
-			<div className="mt-6 flex items-center gap-3 rounded-2xl bg-paper p-3">
-				<Avatar name="Karim Hossain" size={40} />
-				<div className="flex-1">
-					<p className="text-sm font-semibold">Karim Hossain</p>
-					<p className="text-xs text-ink-soft">Arriving in about 20 min</p>
-				</div>
-			</div>
-		</div>
-	);
-}
-
 export default function LandingPage() {
 	const categories = useCategories();
 
@@ -147,7 +101,7 @@ export default function LandingPage() {
 							</span>
 						</div>
 					</div>
-					<BookingPreview />
+					<QuickBook />
 				</div>
 			</section>
 

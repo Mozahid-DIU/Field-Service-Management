@@ -3,14 +3,17 @@
 import { useRouter } from "next/navigation";
 import { type ReactNode, useEffect } from "react";
 import { Logo } from "@/components/brand";
-import { homeFor, useAuth } from "@/lib/auth-store";
+import { homeFor, safeNext, useAuth } from "@/lib/auth-store";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
 	const { status, user } = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (status === "authenticated" && user) router.replace(homeFor(user.role));
+		if (status !== "authenticated" || !user) return;
+		// Respect ?next= so deep links and the landing booking form land where intended
+		const next = safeNext(new URLSearchParams(window.location.search).get("next"));
+		router.replace(next ?? homeFor(user.role));
 	}, [status, user, router]);
 
 	return (

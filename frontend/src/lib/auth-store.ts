@@ -46,6 +46,15 @@ export function useAuth(): AuthState {
 	return useSyncExternalStore(authStore.subscribe, authStore.get, () => serverSnapshot);
 }
 
+/**
+ * A same-site path from ?next=, or null. Blocks //evil.com and /\evil.com
+ * (browsers treat a backslash like a slash) to prevent open redirects.
+ */
+export function safeNext(next: string | null | undefined): string | null {
+	if (!next?.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) return null;
+	return next;
+}
+
 export function homeFor(role: User["role"]): string {
 	switch (role) {
 		case "ADMIN":
