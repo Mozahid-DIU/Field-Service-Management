@@ -7,6 +7,7 @@ import {
 	paymentRoutes,
 } from "../modules/payment/payment.routes";
 import { technicianRoutes } from "../modules/technician/technician.routes";
+import { uploadRoutes } from "../modules/upload/upload.routes";
 import { userRoutes } from "../modules/user/user.routes";
 import { workOrderRoutes } from "../modules/workOrder/workOrder.routes";
 
@@ -26,6 +27,7 @@ const moduleRoutes: ModuleRoute[] = [
 	{ path: "/invoices", route: invoiceRoutes },
 	{ path: "/payments", route: paymentRoutes },
 	{ path: "/admin", route: adminRoutes },
+	{ path: "/uploads", route: uploadRoutes },
 ];
 
 for (const { path, route } of moduleRoutes) {
