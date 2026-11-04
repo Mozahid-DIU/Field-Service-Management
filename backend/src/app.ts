@@ -12,8 +12,9 @@ import { sendResponse } from "./utils/sendResponse";
 
 const app: Application = express();
 
-// Render / Vercel sit behind a proxy — needed for correct client IPs in rate limiting
-app.set("trust proxy", 1);
+// Number of proxies in front of us (see TRUST_PROXY_HOPS) — gives rate limiting
+// the real client IP instead of the proxy's
+app.set("trust proxy", env.TRUST_PROXY_HOPS);
 
 app.use(helmet());
 app.use(

@@ -25,6 +25,11 @@ const envSchema = z.object({
 
 	FRONTEND_URL: z.string().url().default("http://localhost:3000"),
 	CORS_ORIGINS: optionalString,
+	/**
+	 * Reverse proxies in front of the API. Render's load balancer = 1;
+	 * frontend proxy (Vercel rewrite) + Render = 2. Used for real client IPs.
+	 */
+	TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(1),
 
 	GOOGLE_CLIENT_ID: optionalString,
 

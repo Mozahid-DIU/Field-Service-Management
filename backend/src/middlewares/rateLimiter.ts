@@ -25,6 +25,9 @@ export const apiLimiter = rateLimit({
 export const authLimiter = rateLimit({
 	windowMs: FIFTEEN_MINUTES_MS,
 	limit: AUTH_MAX_REQUESTS,
+	// Only failed attempts count: blocks password guessing without locking out
+	// people (or a whole office behind one IP) who sign in successfully
+	skipSuccessfulRequests: true,
 	standardHeaders: "draft-8",
 	legacyHeaders: false,
 	statusCode: StatusCodes.TOO_MANY_REQUESTS,

@@ -13,6 +13,9 @@ services:
         value: production
       - key: NODE_VERSION
         value: "22"
+      # Vercel rewrite + Render load balancer sit in front of the API
+      - key: TRUST_PROXY_HOPS
+        value: "2"
       - key: DATABASE_URL
         sync: false
       - key: JWT_ACCESS_SECRET
